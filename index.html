@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12213f">
+<title>CHEM-BOND — Ikatan Kovalen Koordinasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --navy:#12213f; --navy-2:#0c172d; --blue:#1d4a8a; --sky:#4aa8ff; --cyan:#3cc7e6;
+  --gold:#78b7f2; --mint:#4fd8a0; --rose:#ff7d8c;
+  --ink:#16233a; --muted:#5a6a82; --paper:#f3f6fb; --line:#d8e1ee; --white:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:#fff;line-height:1.65;font-size:16px}
+h1,h2,h3,h4{font-family:"Sora","Plus Jakarta Sans",system-ui,sans-serif;line-height:1.22;margin:0;letter-spacing:-.01em}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+sub,sup{line-height:0}
+
+/* ---------- kerangka slide ---------- */
+.slide{position:relative;padding:clamp(36px,6vw,72px) clamp(16px,4vw,32px)}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.bg-white{background:#fff}
+.bg-paper{background:var(--paper)}
+
+.tag{display:inline-block;align-self:flex-start;font-weight:700;font-size:.9rem;color:var(--blue);background:#e4eefc;border:1px solid #c9dcf6;padding:5px 14px;border-radius:999px}
+.sec-title{font-size:clamp(1.7rem,4.2vw,2.5rem);font-weight:700;color:var(--navy)}
+.sec-desc{color:var(--muted);max-width:68ch}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px}
+.card h3{font-size:1.1rem;color:var(--navy);margin-bottom:10px}
+.card p,.card li{color:#33445d;font-size:.96rem}
+.card ul,.card ol{margin:0;padding-left:1.15rem;display:grid;gap:6px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (max-width:860px){.grid3{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:12px;border:2px solid transparent;font-weight:700;font-size:.98rem;transition:transform .15s,background .15s,border-color .15s;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#245aa6}
+.btn-gold{background:var(--gold);color:#102b4b}
+.btn-gold:hover{background:#ffd163}
+.btn-ghost{background:transparent;color:var(--blue);border-color:#b8cde9}
+.btn-ghost:hover{background:#eaf2fd}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn.speaking{background:var(--rose);color:#3a0710;border-color:var(--rose)}
+
+/* ---------- slide 1 : beranda ---------- */
+/* Simulasi dibuat lebih ringkas agar nyaman dilihat di layar laptop */
+@media (min-width:861px){
+  #slide-6 .wrap,#slide-7 .wrap{max-width:980px}
+  #slide-6 .sim-area,#slide-7 .sim-area{max-width:760px;margin:0 auto}
+  #slide-6 .sim-area svg,#slide-7 .sim-area svg{max-height:340px;width:100%;object-fit:contain}
+  #slide-6 .flow,#slide-6 .challenge,#slide-6 .tang{max-width:900px;margin-left:auto;margin-right:auto}
+  #slide-7 .koor-ctl,#slide-7 .tang{max-width:900px;margin-left:auto;margin-right:auto}
+  #slide-7 .card.def{padding:18px 20px}
+  #slide-6 .sim-btns{justify-content:center}
+}
+.drag-token{cursor:grab;touch-action:none;pointer-events:all;user-select:none;-webkit-user-select:none}
+.drag-token:active{cursor:grabbing}
+.drag-target{fill:rgba(255,209,99,.12);stroke:#ffd163;stroke-width:2;stroke-dasharray:6 5}
+.drag-instruction{fill:#dcebff;font-size:14px;font-weight:700}
+
+.hero{color:#fff;text-align:center;
+  background:
+    radial-gradient(900px 520px at 88% -8%,rgba(74,168,255,.30),transparent 60%),
+    radial-gradient(700px 480px at -8% 108%,rgba(60,199,230,.20),transparent 60%),
+    linear-gradient(165deg,#0a1530 0%,#12213f 45%,#1c3c70 100%)}
+.hero .wrap{gap:22px;align-items:center}
+.logo{width:84px;height:84px;border-radius:24px;display:grid;place-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2)}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.nav a{color:#dbe9ff;text-decoration:none;font-size:.86rem;font-weight:600;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);transition:background .15s}
+.nav a:hover{background:rgba(255,255,255,.18)}
+.nav b{color:var(--gold);margin-right:6px;font-weight:700}
+.brandrow{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0;width:100%;max-width:640px}
+.brand{font-family:"Sora",sans-serif;font-weight:800;font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:.04em;text-align:right;padding-right:22px;border-right:2px solid rgba(255,255,255,.3)}
+.brand-sub{text-align:left;padding-left:22px;color:#bcd4f5;font-weight:500;font-size:clamp(.95rem,2.4vw,1.15rem);line-height:1.35}
+.progress{width:100%;max-width:640px}
+.progress .row{display:flex;justify-content:space-between;font-size:.86rem;color:#bcd4f5;margin-bottom:6px}
+.progress .row b{color:var(--gold)}
+.track{height:10px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:999px;transition:width .25s}
+.hero-label{font-size:.92rem;font-weight:600;color:var(--gold);padding:6px 16px;border:1px solid rgba(244,194,77,.5);border-radius:999px}
+.hero h1{font-size:clamp(2.4rem,7vw,4.4rem);font-weight:800;line-height:1.08;max-width:14ch}
+.hero .desc{max-width:60ch;color:#cfe0f8;font-size:1.05rem}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:820px}
+.badge{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);font-size:.88rem;font-weight:600;color:#e6f0ff}
+.hero-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:520px}
+.hero .btn-ghost{color:#fff;border-color:rgba(255,255,255,.4)}
+.hero .btn-ghost:hover{background:rgba(255,255,255,.12)}
+.hero-illus{width:100%;max-width:640px;border-radius:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);padding:8px}
+.hero-illus svg{width:100%;height:auto;display:block}
+.orbit{transform-box:fill-box;transform-origin:center;animation:spin 26s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:640px){.badges{grid-template-columns:repeat(2,1fr)}.brandrow{grid-template-columns:1fr}.brand{text-align:center;border-right:0;padding:0 0 6px}.brand-sub{text-align:center;padding:0}.hero-btns{grid-template-columns:1fr}}
+
+/* ---------- slide 2 : peta ---------- */
+.accent-title{display:flex;align-items:center;gap:14px}
+.accent-title i{display:block;width:6px;height:44px;border-radius:4px;background:linear-gradient(var(--blue),var(--cyan))}
+.accent-title span{font-family:"Sora",sans-serif;font-weight:700;color:var(--blue);font-size:1.05rem}
+.q-box{background:linear-gradient(135deg,#edf6ff,#fff);border:1px solid #cfe3f8;border-radius:18px;padding:24px}
+.q-box h3{font-size:1.15rem;margin-bottom:8px;color:#17416f}
+.q-box .q{font-family:"Sora",sans-serif;font-weight:600;font-size:1.2rem;color:var(--navy);margin-bottom:8px}
+textarea{width:100%;min-height:120px;resize:vertical;border:2px solid var(--line);border-radius:14px;padding:14px 16px;font:inherit;color:var(--ink);background:#fff}
+textarea:focus{border-color:var(--sky);outline:none}
+.ans-box label{display:block;font-weight:700;color:var(--navy);margin-bottom:8px}
+
+/* ---------- slide 3 & 4 ---------- */
+.pemantik{position:relative;padding-top:50px}
+.pemantik .no{position:absolute;top:14px;left:20px;font-family:"Sora",sans-serif;font-weight:800;font-size:1.5rem;color:var(--sky)}
+.head-note{font-family:"Sora",sans-serif;font-weight:700;color:var(--navy);font-size:1.15rem}
+.def h3{font-size:1.3rem}
+.lewis{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-top:14px;padding:18px;border-radius:14px;background:#eef4fd;font-family:"Sora",sans-serif;font-size:clamp(1.3rem,3.6vw,1.9rem);font-weight:700;color:var(--blue);letter-spacing:.03em}
+.lewis small{font-family:"Plus Jakarta Sans",sans-serif;font-size:.85rem;font-weight:500;color:var(--muted);letter-spacing:0;flex-basis:100%;text-align:center}
+.note{border-left:6px solid var(--sky);background:#edf6ff;border-radius:0 14px 14px 0;padding:16px 20px}
+.note b{font-family:"Sora",sans-serif;color:#17416f}
+.note.key{border-left-color:var(--sky);background:#eaf4ff}
+.note.key b{color:var(--blue)}
+.config{display:inline-block;font-family:"Sora",sans-serif;font-weight:700;font-size:clamp(1.3rem,3.6vw,1.9rem);color:var(--navy);background:#fff;border:2px dashed #b8cde9;border-radius:14px;padding:12px 22px}
+.orbs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.orb{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+.orb .nm{font-family:"Sora",sans-serif;font-weight:700;color:var(--navy);margin-bottom:10px}
+.boxes{display:flex;justify-content:center;gap:6px}
+.obox{width:46px;height:46px;border:2px solid #7e97bd;border-radius:8px;display:grid;place-items:center;font-size:1.25rem;font-weight:800;color:var(--blue);background:#f8fbff;letter-spacing:-2px}
+.obox.val{border-color:var(--gold);background:#edf6ff}
+@media (max-width:640px){.orbs{grid-template-columns:1fr}}
+
+/* ---------- slide 5 ---------- */
+.av-panel{border-radius:24px;padding:clamp(24px,5vw,44px);color:#fff;min-height:200px;display:flex;flex-direction:column;justify-content:center;gap:14px;
+  background:radial-gradient(500px 260px at 90% 0%,rgba(60,199,230,.3),transparent 60%),linear-gradient(150deg,#0e1b36,#1c3c70)}
+.av-panel h2{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700}
+.eq{display:flex;align-items:flex-end;gap:5px;height:44px}
+.eq i{display:block;width:7px;border-radius:4px;background:var(--cyan);height:10px}
+.eq.on i{animation:eq 0.9s ease-in-out infinite}
+.eq.on i:nth-child(2n){animation-delay:.18s;background:var(--gold)}
+.eq.on i:nth-child(3n){animation-delay:.34s}
+@keyframes eq{0%,100%{height:8px}50%{height:42px}}
+.av-desc{min-height:150px;display:flex;align-items:center;font-size:1.08rem;color:#33445d}
+.av-act{min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.av-act .ico{font-size:2.4rem}
+.av-act p{color:var(--muted);font-size:.94rem;max-width:30ch}
+
+/* ---------- slide 6 : simulasi ---------- */
+.sim{color:#e6f0ff;background:radial-gradient(800px 400px at 100% 0%,rgba(60,199,230,.14),transparent 60%),linear-gradient(180deg,#0c172d,#12284a)}
+.sim .tag{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#bfe0ff}
+.sim .sec-title{color:#fff}
+.sim .sec-desc{color:#b7cdea}
+.stage-ind{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.stage-pill{font-family:"Sora",sans-serif;font-weight:700;color:#102b4b;background:var(--gold);padding:6px 16px;border-radius:999px}
+.dots{display:flex;gap:6px}
+.dots i{width:28px;height:6px;border-radius:4px;background:rgba(255,255,255,.2);transition:background .2s}
+.dots i.on{background:var(--cyan)}
+.sim-area{background:#0a1429;border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:12px 14px 14px;max-width:780px;width:100%;margin:0 auto}
+.sim-area .hd{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:2px 8px 8px;font-size:.9rem}
+.sim-area .hd b{font-family:"Sora",sans-serif;color:var(--cyan)}
+.sim-area .hd span{color:#a9c1e2}
+.sim-area svg{width:100%;height:auto;max-height:310px;display:block;margin:8px auto 14px}.sim-area .sim-foot{display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 14px 4px;border-top:1px solid rgba(255,255,255,.12)}.sim-area .sim-foot .cap{width:100%;max-width:680px;min-width:0;margin:0 auto;text-align:center;line-height:1.65;font-size:.98rem;white-space:normal}.sim-area .sim-foot .btn{align-self:center}.sim-interaction-hint{max-width:680px;margin:8px auto 12px;padding:14px 18px;border:1px solid rgba(120,183,242,.35);border-radius:14px;background:rgba(120,183,242,.09);color:#e7f1ff;text-align:center;line-height:1.65}.pair-choice{cursor:pointer;pointer-events:all;transform-box:fill-box;transform-origin:center;transition:filter .15s}.pair-choice:hover{filter:drop-shadow(0 0 7px rgba(120,183,242,.95))}.pair-choice.wrong-choice{animation:rejectPair .34s ease-in-out}.pair-choice.correct-choice{filter:drop-shadow(0 0 9px rgba(79,216,160,.95))}.pair-hit{fill:transparent;stroke:transparent;stroke-width:18;pointer-events:all}@keyframes rejectPair{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.sim-area .cap{padding:8px 8px 0;text-align:center;color:#dcebff;min-height:2.2em;font-size:.9rem}
+.sim-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sim .btn-ghost{color:#e6f0ff;border-color:rgba(255,255,255,.35)}
+.sim .btn-ghost:hover{background:rgba(255,255,255,.1)}
+@media (max-width:640px){.sim-btns{grid-template-columns:1fr}}
+.flow{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:20px 22px}
+.flow .st{font-size:.85rem;color:var(--cyan);font-weight:700}
+.flow h3{font-size:1.25rem;color:#fff;margin:2px 0 14px}
+.flow ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 6px;align-items:center}
+.flow li{display:flex;align-items:center;gap:6px;font-size:.88rem}
+.flow li span{padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);color:#a9c1e2;background:transparent}
+.flow li.done span{color:#bff0dc;border-color:rgba(79,216,160,.5)}
+.flow li.now span{background:var(--gold);color:#102b4b;border-color:var(--gold);font-weight:700}
+.flow li:not(:last-child)::after{content:"→";color:#6f89ad}
+.challenge{background:linear-gradient(135deg,rgba(74,168,255,.18),rgba(74,168,255,.06));border:1px solid rgba(74,168,255,.45);border-radius:18px;padding:20px 22px}
+.challenge h3{color:#9bcfff;font-size:1.1rem;margin-bottom:6px}
+.challenge p{color:#f1e6c6}
+.sim .btn-gold{align-self:flex-start}
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+.drop{animation:drop .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes drop{from{transform:translateY(-58px);opacity:.2}to{transform:none;opacity:1}}
+.fadein{animation:fade .6s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ---------- slide 7 & 8 ---------- */
+.video-box{position:relative;border-radius:20px;overflow:hidden;background:#0a1429;border:1px solid #223457;aspect-ratio:854/414;width:100%;max-width:900px;margin:0 auto}
+.video-box video{width:100%;height:100%;display:block;background:#000}
+.video-missing{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px;color:#cfe0f8;background:linear-gradient(150deg,#0e1b36,#1c3c70)}
+.video-missing.show{display:flex}
+.video-missing code{background:rgba(255,255,255,.12);padding:2px 8px;border-radius:6px;color:var(--gold)}
+.narr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;background:#eaf4ff;border:1px solid #c9dcf6;border-radius:16px;padding:14px 18px}
+.narr .info{display:flex;flex-direction:column;font-size:.92rem;color:#33445d}
+.narr .info b{color:var(--blue)}
+.switch{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border-radius:999px;border:2px solid var(--blue);background:var(--blue);color:#fff;font-weight:700}
+.switch.off{background:#fff;color:var(--muted);border-color:#b8cde9}
+.particle{text-align:center;padding:18px 12px}
+.particle .f{font-family:"Sora",sans-serif;font-weight:800;font-size:1.6rem;color:var(--blue)}
+.particle .n{font-size:.88rem;color:var(--muted)}
+.life-banner{position:relative;overflow:hidden;border-radius:24px;min-height:200px;padding:clamp(28px,5vw,48px);display:flex;align-items:center;color:#fff;
+  background:radial-gradient(420px 220px at 100% 100%,rgba(79,216,160,.35),transparent 60%),linear-gradient(140deg,#12385a,#1b6a7e)}
+.life-banner h2{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;position:relative;z-index:1}
+.life-banner svg{position:absolute;right:-30px;top:50%;transform:translateY(-50%);opacity:.22;width:340px;height:340px}
+.life-card{min-height:300px;padding:26px}
+.life-card .ico{font-size:2rem;margin-bottom:8px}
+.life-card h3{font-size:1.2rem;color:var(--navy);margin-bottom:10px}
+
+/* ---------- slide 9 & 10 ---------- */
+.q-item{padding:18px 0;border-top:1px solid var(--line)}
+.q-item:first-child{border-top:0;padding-top:4px}
+.q-text{font-weight:700;color:var(--navy);margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);transition:border-color .15s,background .15s}
+.opt:hover:not([disabled]){border-color:var(--sky);background:#f2f8ff}
+.opt .lt{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.82rem;background:#e4eefc;color:var(--blue)}
+.opt.ok{border-color:var(--mint);background:#e9fbf3}
+.opt.ok .lt{background:var(--mint);color:#06361f}
+.opt.bad{border-color:var(--rose);background:#fff0f2}
+.opt.bad .lt{background:var(--rose);color:#4a0a14}
+.opt[disabled]{cursor:default}
+.reason{border-radius:16px;padding:18px 20px;background:#eef4fd;border:1px dashed #b8cde9;color:#33445d}
+.reason b{color:var(--navy)}
+.reason.ok{background:#e9fbf3;border:1px solid #b3ecd3}
+.reason.bad{background:#fff3e6;border:1px solid #f6d3a8}
+.quiz-bar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-weight:700;color:var(--navy)}
+.quiz-bar .sc{color:var(--blue)}
+.result{text-align:center;padding:18px 8px}
+.result .big{font-family:"Sora",sans-serif;font-size:3.4rem;font-weight:800;color:var(--blue)}
+.result p{color:var(--muted);margin-top:6px}
+
+/* ---------- slide 11 ---------- */
+.rc{padding:20px}
+.rc .n{font-family:"Sora",sans-serif;font-weight:800;color:var(--sky);font-size:1.2rem;margin-bottom:4px}
+.rc h3{font-size:1.05rem;margin-bottom:6px}
+.rc p{font-size:.92rem}
+.mis{background:#fff7f0;border:1px solid #f6d3a8;border-radius:18px;padding:22px 24px}
+.mis h3{color:#8a4300;margin-bottom:12px;font-size:1.15rem}
+.mis ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.mis li{display:grid;gap:2px;font-size:.95rem}
+.mis li s{color:#a0562b;text-decoration-thickness:2px}
+.mis li span{color:#1d6b46}
+.save-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff}
+.save-row .msg{color:#1d6b46;font-weight:600;min-height:1.4em}
+.foot{margin-top:6px;border-radius:20px;background:linear-gradient(150deg,#0a1530,#1c3c70);color:#dbe9ff;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:20px 24px}
+.foot b{font-family:"Sora",sans-serif;color:#fff}
+.foot .btn{padding:10px 16px}
+
+/* ---------- modal visualisasi kulit elektron ---------- */
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(6,12,26,.72)}
+.modal.open{display:flex}
+.modal-card{background:#fff;border-radius:22px;width:min(640px,100%);max-height:92vh;overflow:auto;padding:24px;animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.modal-card .top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.modal-card h3{font-size:1.25rem;color:var(--navy)}
+.x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:1.1rem}
+.mod-orbs{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:16px 8px;background:#f3f7fd;border-radius:16px}
+.mod-orbs .g{text-align:center;cursor:pointer;padding:8px 12px;border:2px solid transparent;border-radius:12px;transition:background .15s,border-color .15s}.mod-orbs .g:hover{background:#e4eefc;border-color:#9fc4f0}.mod-orbs .g:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.mod-orbs .g .nm{font-family:"Sora",sans-serif;font-weight:700;color:var(--navy);margin-bottom:6px}
+.orb-instruction{font-size:.9rem;color:var(--muted);margin:4px 0 10px}.mod-info{margin:14px 0;padding:14px 16px;border-radius:14px;background:#eef4fd;min-height:4.6em;color:#33445d}
+.mod-ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mod-ctl .cnt{margin-left:auto;font-weight:700;color:var(--blue)}
+
+
+
+/* hero muat dalam satu layar */
+.hero .wrap{gap:clamp(8px,1.7vh,20px)}
+.hero .logo{width:clamp(52px,8vh,76px);height:clamp(52px,8vh,76px);border-radius:20px}
+.hero .logo svg{width:70%;height:70%}
+.hero h1{font-size:clamp(2rem,min(7vw,8.5vh),4.2rem);max-width:none}
+.hero .brand{font-size:clamp(1.6rem,min(5vw,5.5vh),2.6rem)}
+.hero .nav{gap:6px}
+.hero .nav a{padding:7px 12px;font-size:.82rem}
+.hero .desc{font-size:clamp(.92rem,2vh,1.05rem)}
+.hero .badge{padding:8px 10px}
+.hero .btn{padding:11px 20px}
+.hero-illus svg{max-height:clamp(120px,22vh,260px)}
+
+
+@media (min-width:700px) and (max-height:1100px){
+  #slide-1{padding-top:18px}
+  .hero .wrap{gap:8px}
+  .hero .logo{width:48px;height:48px;border-radius:14px}
+  .hero .nav{gap:5px;flex-wrap:wrap}
+  .hero .nav a{padding:6px 9px;font-size:.76rem;white-space:nowrap}
+  .hero .nav b{margin-right:4px}
+  .hero .brand{font-size:1.7rem;padding-right:18px}
+  .hero .brand-sub{font-size:.95rem;padding-left:18px}
+  .hero .progress .row{margin-bottom:3px;font-size:.78rem}
+  .hero .track{height:8px}
+  .hero-label{font-size:.82rem;padding:4px 14px}
+  .hero h1{font-size:clamp(1.9rem,7.4vh,3.2rem)}
+  .hero .desc{font-size:.9rem;max-width:84ch;line-height:1.5}
+  .hero .badge{padding:6px 10px;font-size:.8rem}
+  .hero .btn{padding:9px 18px;font-size:.92rem}
+  .hero-illus{padding:4px}
+  .hero-illus svg{max-height:19vh}
+}
+
+
+/* ===== penyesuaian layar laptop dan proyektor ===== */
+@media (min-width:700px){
+  .deck>.slide{padding-left:clamp(22px,3vw,42px);padding-right:clamp(22px,3vw,42px)}
+  .deck>.slide>.wrap{max-width:1120px;gap:14px}
+  .sec-title{font-size:clamp(1.55rem,2.6vw,2.15rem)}
+  .slide{padding-top:clamp(30px,4vh,48px)}
+  .card{padding:18px 20px}
+  .tag{font-size:.82rem;padding:4px 12px}
+  .sec-desc{font-size:.94rem}
+  .deck>.slide:not(#slide-1){padding-top:48px}
+}
+@media (min-width:700px) and (max-height:800px){
+  .deck>.slide>.wrap{gap:11px}
+  .deck>.slide:not(#slide-1){padding-top:40px}
+  .card{padding:15px 18px}
+  .slide{padding-bottom:112px}
+}
+
+/* ---------- mode slide (satu slide per layar) ---------- */
+html,body{height:100%;width:100%;max-width:100%;overflow:hidden}
+.deck{position:fixed;inset:0;overflow:hidden;overflow:clip}
+.deck>.slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:flex;
+  padding-bottom:calc(132px + env(safe-area-inset-bottom,0px));
+  opacity:0;visibility:hidden;transform:translateX(28px);
+  transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s}
+.deck>.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+.deck>.slide>.wrap{width:100%;margin:auto}
+.navbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px clamp(12px,3vw,24px) calc(10px + env(safe-area-inset-bottom,0px));
+  background:rgba(10,21,48,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.14);color:#fff}
+.navbar .btn{padding:10px 18px;white-space:nowrap}
+.navbar .btn-ghost{color:#fff;border-color:rgba(255,255,255,.4)}
+.navbar .btn-ghost:hover{background:rgba(255,255,255,.12)}
+.navbar .mid{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:.84rem;font-weight:600;color:#cfe0f8}
+.ndots{display:flex;gap:6px;align-items:center}
+.ndots button{width:9px;height:9px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,.28);transition:all .2s}
+.ndots button.on{background:var(--gold);width:22px;border-radius:5px}
+@media (max-width:520px){.navbar{gap:6px}.navbar .btn{padding:10px 12px;font-size:.86rem}.ndots{display:none}.navbar .mid{flex:1;min-width:0;text-align:center}}
+
+
+/* ---------- penguncian tahap, top bar, jawaban singkat ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:40;height:30px;display:flex;align-items:center;gap:10px;padding:0 clamp(12px,3vw,24px);
+  background:rgba(10,21,48,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#cfe0f8;font-size:.78rem;font-weight:600}
+.topbar .tb-track{flex:1;height:7px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden}
+.topbar .tb-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width .3s}
+.topbar b{color:var(--gold);min-width:2.6em;text-align:right}
+body.s1 .topbar{display:none}
+.deck>.slide:not(#slide-1){padding-top:calc(clamp(36px,6vw,72px) + 30px)}
+.gate-pill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:45;max-width:min(92vw,560px);
+  padding:9px 16px;border-radius:14px;background:#edf6ff;color:#17416f;border:1px solid #f0dfa8;font-weight:700;font-size:.86rem;text-align:center;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.45);display:none}
+.gate-pill.show{display:block}
+.gate-pill.ok{background:#e9fbf3;color:#14573a;border-color:#b3ecd3}
+.gate-pill.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(calc(-50% - 7px))}75%{transform:translateX(calc(-50% + 7px))}}
+.btn.locked{opacity:.55}
+.nav a.locked::after{content:" 🔒";font-size:.78em}
+.ndots button.lock{opacity:.35}
+.gate-row{display:flex;justify-content:center;margin-top:6px}
+.hint{margin-top:8px;font-size:.88rem;color:var(--muted)}
+.steps .step{display:flex;gap:12px;align-items:flex-start;background:#f3f7fd;border:1px solid var(--line);border-radius:14px;padding:14px}
+.steps .step span{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:700;font-size:.9rem}
+.steps .step p{font-size:.92rem}
+.sa{display:flex;gap:10px;flex-wrap:wrap}
+.sa-in{flex:1;min-width:200px;border:2px solid var(--line);border-radius:12px;padding:11px 14px;font:inherit;color:var(--ink);background:#fff}
+.sa-in:focus{border-color:var(--sky);outline:none}
+.sa-in:disabled{background:#f3f6fb}
+.sa-msg{min-height:1.4em;margin-top:6px;font-weight:600;font-size:.92rem}
+.sa-msg.ok{color:#14573a}
+.sa-msg.bad{color:#9a4a12}
+#narr-cue{display:block;font-style:italic;color:var(--blue);min-height:1.4em;margin-top:2px}
+
+
+.grid4.steps{grid-template-columns:repeat(4,1fr);gap:12px}
+.steps .step{min-width:0}
+.steps .step p{overflow-wrap:anywhere}
+@media (max-width:900px){.grid4.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.grid4.steps{grid-template-columns:1fr}}
+
+.deck>#slide-1{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+
+.hero .nav{width:max-content;max-width:96vw}
+
+
+.author{display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.35;margin-top:2px}
+.author .by{font-size:.78rem;color:#9fb9de;letter-spacing:.04em}
+.author b{font-family:"Sora",sans-serif;font-size:1.05rem;color:#fff;font-weight:700}
+.author .nim{font-size:.88rem;color:var(--gold);font-weight:600;letter-spacing:.03em}
+@media (min-width:700px) and (max-height:1100px){
+  .author{flex-direction:row;gap:8px;align-items:baseline;flex-wrap:wrap;justify-content:center;margin-top:0}
+  .author .by{font-size:.74rem}
+  .author b{font-size:.92rem}
+  .author .nim{font-size:.8rem}
+  .hero-illus svg{max-height:15vh}
+}
+
+
+@media (max-width:699px){
+  .hero .wrap>.logo{order:0}.hero .wrap>.nav{order:1}.hero .wrap>.brandrow{order:2}.hero .wrap>.author{order:3}
+  .hero .wrap>.progress{order:4}.hero .wrap>.hero-label{order:5}.hero .wrap>h1{order:6}.hero .wrap>.desc{order:7}
+  .hero .wrap>.badges{order:8}.hero .wrap>.hero-btns{order:9}.hero .wrap>.hero-illus{order:10}
+}
+
+
+/* tombol putar besar + pemutar cadangan (rangkaian gambar) */
+.vid-play{position:absolute;inset:0;z-index:2;display:grid;place-items:center;border:0;background:rgba(6,12,26,.28);cursor:pointer}
+.vid-play[hidden]{display:none}
+.vid-play span{display:flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;background:var(--gold);color:#102b4b;font-weight:800;font-size:1.05rem;box-shadow:0 10px 30px -8px rgba(0,0,0,.6)}
+.fp{position:absolute;inset:0;z-index:3;background:#000;display:flex;flex-direction:column}
+.fp[hidden]{display:none}
+.fp img{flex:1;min-height:0;width:100%;object-fit:contain;background:#000;display:block}
+.video-box.fpm{aspect-ratio:auto}
+.video-box.fpm .fp{position:relative;inset:auto}
+.video-box.fpm .fp img{flex:none;height:auto;aspect-ratio:854/414}
+.fp-bar{display:flex;align-items:center;gap:12px;padding:8px 12px;background:#0a1429;color:#cfe0f8;font-size:.82rem;font-weight:600}
+.fp-btn{flex:none;border:0;border-radius:999px;padding:7px 14px;background:var(--gold);color:#102b4b;font-weight:800}
+.fp-track{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.2);overflow:hidden}
+.fp-fill{height:100%;width:0;background:var(--cyan)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ===== revisi: stepper cara menggunakan, tanggapan siswa, simulasi baru, rekap Excel ===== */
+.stepper h3{margin-bottom:6px}
+.st-count{font-weight:700;color:var(--blue);font-size:.9rem;margin-bottom:10px}
+.st-body{display:flex;gap:18px;align-items:flex-start;min-height:150px;padding:18px;border-radius:16px;background:#f3f7fd;border:1px solid var(--line);animation:fade .35s ease both}
+.cm-num{flex:none;width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(140deg,var(--blue),var(--sky));color:#fff;font-family:"Sora",sans-serif;font-weight:800;font-size:2rem}
+.st-body h4{font-size:1.25rem;color:var(--navy);margin-bottom:6px}
+.st-body p{font-size:1.02rem;color:#33445d}
+.stepper .dots.lt{margin:14px 0 4px}
+.st-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px}
+.dots.lt i{background:#cdd8e8}
+.dots.lt i.on{background:var(--blue)}
+.id-box label{display:block;font-weight:700;color:var(--navy);margin:12px 0 6px}
+.id-box .sa-in{width:100%;flex:none}
+.tang h3{margin-bottom:4px}
+.tang .q2{font-weight:600;color:var(--navy);margin-bottom:10px;font-size:1.02rem}
+.tang.dark{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+.tang.dark h3{color:var(--gold)}
+.tang.dark .q2{color:#fff}
+.tang.dark .hint{color:#a9c1e2}
+.tang.dark textarea{background:#fff}
+#donor-feedback{background:#fff;color:#183153;border:1px solid #c8d8ed;border-radius:12px;padding:12px;margin-top:12px}
+#donor-feedback p{color:#183153!important}
+#donor-feedback .fb-good{color:#167044!important}
+#donor-feedback .fb-warn{color:#9b4a00!important}
+.lewis-fig{margin-top:14px;padding:10px;border-radius:14px;background:#eef4fd;text-align:center}
+.lewis-fig svg{width:100%;max-width:560px;height:auto}
+.lewis-fig small{display:block;color:var(--muted);font-size:.85rem;margin-top:4px}
+.koor-ctl label{display:block;font-weight:700;color:var(--navy);margin-bottom:8px}
+.koor-ctl input[type=range]{width:100%;accent-color:var(--blue);height:32px}
+.koor-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.sim-foot{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:6px 8px 0}
+.sim-foot .cap{flex:1;min-width:200px;padding:6px 4px;text-align:left}
+.atomcard .orbs{margin:14px 0;grid-template-columns:repeat(3,1fr)}
+.atomcard .orbs.one{grid-template-columns:1fr;max-width:140px;margin:14px auto}
+@media (max-width:640px){.st-body{flex-direction:column}.atomcard .orbs{grid-template-columns:1fr}}
+.cap{color:#dcebff}
+.light-cap{color:var(--ink)}
+.drop-slow{animation:dropSlow 4.5s cubic-bezier(.45,.05,.35,1) both}
+@keyframes dropSlow{from{transform:translateY(-48px)}to{transform:none}}
+.arrow-late{animation:fade 1.4s ease 3.2s both}
+.mvL{animation:mvL 2.8s ease-in-out both}.mvR{animation:mvR 2.8s ease-in-out both}.mvB{animation:mvB 2.8s ease-in-out both}
+@keyframes mvL{from{transform:translateX(-120px)}to{transform:none}}
+@keyframes mvR{from{transform:translateX(120px)}to{transform:none}}
+@keyframes mvB{from{transform:translateY(50px)}to{transform:none}}
+.orb-tabs{display:flex;gap:8px;margin-bottom:12px}
+.orb-tabs .tab{flex:1;padding:10px;border-radius:12px;border:2px solid var(--line);background:#fff;font-weight:700;color:var(--muted)}
+.orb-tabs .tab.on{border-color:var(--blue);background:#eaf2fd;color:var(--blue)}
+.orb-tabs .tab.ok::after{content:" ✓";color:#1d6b46}
+.foot-btns{display:flex;gap:10px;flex-wrap:wrap}
+.save-row .btn{flex:none}
+.sync-line{min-height:1.4em;text-align:center;font-weight:600;font-size:.92rem;color:var(--muted)}
+.sync-line.ok{color:#14573a}.sync-line.warn{color:#9a4a12}.sync-line.busy{color:var(--blue)}
+.modal-card.wide{width:min(1000px,100%)}
+.guru-login{margin-bottom:10px}
+.guru-login p{font-size:.92rem;color:var(--muted);margin-bottom:8px}
+.tbl-wrap{overflow:auto;max-height:46vh;border:1px solid var(--line);border-radius:12px;margin:10px 0}
+.tbl-wrap table{border-collapse:collapse;font-size:.82rem;min-width:100%}
+.tbl-wrap th{position:sticky;top:0;background:var(--blue);color:#fff;text-align:left;padding:8px 10px;white-space:nowrap}
+.tbl-wrap td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top;max-width:280px}
+.tbl-wrap tr:nth-child(even) td{background:#f7f9fd}
+.hint.ok{color:#14573a}
+
+
+/* Penyesuaian layar ponsel: teks dan ilustrasi tidak membesar berlebihan. */
+@media(max-width:700px){
+  html{font-size:14px!important} body{overflow-x:hidden}
+  .wrap{width:min(100% - 22px,980px)!important;padding-top:18px!important;padding-bottom:22px!important}
+  .sec-title{font-size:clamp(1.45rem,6vw,2rem)!important;line-height:1.2!important}
+  .sec-desc,.card p,.q-box p{font-size:1rem!important;line-height:1.55!important}
+  .sim-area{padding:10px!important;overflow:hidden}
+  .sim-area svg{display:block;width:100%;height:auto;max-height: min(62vw,360px)!important}
+  .lewis-fig svg{max-height:260px}
+  .grid2{grid-template-columns:1fr!important}
+  .card{padding:15px!important}
+  .navbar{padding:8px 10px!important}
+}
+.fb-good{color:#16834d}.fb-warn{color:#b56b00}
+.reason p{margin-top:8px;line-height:1.65}
+
+
+.shell-key,.atom-picks{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.shell-key span{padding:7px 10px;border-radius:9px;background:#edf3fb;color:#18345d;font-size:.88rem}.pick{border:1px solid #d5deec;background:#fff;color:#18345d;border-radius:9px;padding:8px 12px;font-weight:700;cursor:pointer}.pick.on{background:#142b62;color:#fff;border-color:#d6a52c}.atom-view-grid{display:grid;grid-template-columns:minmax(220px,1fr) minmax(220px,1fr);gap:16px;align-items:center}.atom-orbit-view{min-height:260px;display:grid;place-items:center;background:#07133a;border-radius:16px;overflow:hidden}.atom-orbit-view svg{width:100%;max-width:360px;height:auto}.atom-facts h3{margin:6px 0}.atom-config{color:#2399c4!important}.atom-facts table{width:100%;border-collapse:collapse;font-size:.88rem}.atom-facts td,.atom-facts th{padding:6px;border-bottom:1px solid #dce3ef;text-align:left}.valence-callout{padding:10px;border:1px solid #d5deec;border-radius:12px;background:#f7faff}.legend-dot{display:flex;gap:8px;align-items:center;color:#66748a}.inner-dot,.gold-dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:#dbeafe}.gold-dot{background:#d6a52c}.practice-atom label{display:block;font-weight:700;margin:8px 0 4px}.practice-atom input{width:100%;padding:10px;border:1px solid #cbd6e5;border-radius:9px}.practice-atom h3{margin-bottom:5px}.atom-electron{transform-origin:center;animation:electronOrbit 5s linear infinite}@keyframes electronOrbit{to{transform:rotate(360deg)}}
+@media(max-width:700px){.atom-view-grid{grid-template-columns:1fr}.atom-orbit-view{min-height:220px}.atom-facts{padding:0 4px}}
+
+
+
+/* ===== tampilan laptop: skala lebih ringkas dan tidak memenuhi layar ===== */
+@media (min-width: 900px){
+  html{font-size:14px !important;}
+  body{font-size:14px !important;line-height:1.5;}
+  .deck>.slide{padding:26px 22px 104px !important;}
+  .deck>.slide:not(#slide-1){padding-top:48px !important;}
+  .deck>.slide>.wrap{width:min(100%,1060px) !important;max-width:1060px !important;gap:12px !important;}
+  .sec-title{font-size:clamp(1.35rem,2vw,1.8rem) !important;}
+  .sec-desc{font-size:.88rem !important;line-height:1.45;}
+  .card{padding:14px 16px !important;border-radius:14px;}
+  .card h3,.def h3{font-size:1rem !important;margin-bottom:7px;}
+  .card p,.card li{font-size:.86rem !important;line-height:1.45;}
+  .tag{font-size:.75rem !important;padding:3px 10px !important;}
+  .q-box{padding:16px 18px !important;}
+  .q-box h3{font-size:1rem !important;}
+  .q-box .q{font-size:1.02rem !important;}
+  .slide .btn{font-size:.86rem !important;padding:8px 14px !important;}
+  .config,.lewis{font-size:1.35rem !important;padding:9px 16px !important;}
+  .orb{padding:11px !important;}
+  .obox{width:38px;height:38px;font-size:1.05rem;}
+  .navbar{padding:7px 18px !important;}
+  .navbar .btn{padding:7px 13px !important;font-size:.82rem !important;}
+  .navbar .mid{font-size:.75rem !important;gap:4px;}
+  .topbar{height:26px;font-size:.7rem;}
+  .deck>.slide:not(#slide-1){padding-top:42px !important;}
+}
+@media (min-width:900px) and (max-height:800px){
+  .deck>.slide{padding-top:20px !important;padding-bottom:92px !important;}
+  .deck>.slide:not(#slide-1){padding-top:38px !important;}
+  .deck>.slide>.wrap{gap:9px !important;}
+  .card{padding:11px 14px !important;}
+}
+
+
+/* Skala simulasi lebih ringkas pada laptop dan tablet; SVG tetap proporsional. */
+@media (min-width:700px){
+  #slide-5 .sim-area,#slide-6 .sim-area,#slide-7 .sim-area{max-width:680px;margin:0 auto;padding:10px 12px!important}
+  #cov-svg,#sim-svg,#hydro-svg{display:block;width:100%;max-width:680px;height:auto;max-height:300px;margin:0 auto;object-fit:contain}
+  #slide-5 .wrap,#slide-6 .wrap,#slide-7 .wrap{max-width:900px!important}
+}
+@media (min-width:700px) and (max-height:850px){
+  #cov-svg,#sim-svg,#hydro-svg{max-height:260px}
+}
+
+
+    .shell-visual{width:100%;max-width:900px;margin:18px auto 8px;overflow:hidden;border-radius:18px}
+    .shell-visual svg{display:block;width:100%;height:auto}
+    @media(max-width:700px){.shell-visual{margin:12px auto}.shell-visual svg{min-width:0}}
+</style>
+</head>
+<body class="s1">
+<div class="topbar" id="topbar"><span class="tb-label">Progress belajar</span><div class="tb-track"><div class="tb-fill" id="tb-fill"></div></div><b id="tb-pct">0%</b></div>
+
+<div class="deck" id="deck">
+<!-- =================== SLIDE 1 : BERANDA (HERO SECTION) =================== -->
+<section id="slide-1" class="slide hero active" aria-label="Beranda">
+  <div class="wrap">
+    <!-- 2. ikon atom -->
+    <div class="logo">
+      <svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
+        <g fill="none" stroke="#7cc4ff" stroke-width="2.4">
+          <ellipse cx="32" cy="32" rx="26" ry="10"/>
+          <ellipse cx="32" cy="32" rx="26" ry="10" transform="rotate(60 32 32)"/>
+          <ellipse cx="32" cy="32" rx="26" ry="10" transform="rotate(120 32 32)"/>
+        </g>
+        <circle cx="32" cy="32" r="5" fill="#78b7f2"/>
+      </svg>
+    </div>
+
+    <!-- 6. menu navigasi 7 bagian -->
+    <nav class="nav" aria-label="Menu navigasi">
+      <a href="#slide-1"><b>01</b>Beranda</a>
+      <a href="#slide-4"><b>02</b>Konsep Dasar</a>
+      <a href="#slide-5"><b>03</b>Simulasi NH₃</a>
+      <a href="#slide-6"><b>04</b>Simulasi NH₄⁺ &amp; H₃O⁺</a>
+      <a href="#slide-7"><b>05</b>Simulasi H₃O⁺</a>
+      <a href="#slide-8"><b>06</b>Uji Pemahaman</a>
+      <a href="#slide-9"><b>07</b>Ringkasan</a>
+    </nav>
+
+    <!-- 3 | 4 -->
+    <div class="brandrow">
+      <div class="brand">CHEM-BOND</div>
+      <div class="brand-sub">Media Pembelajaran Kimia</div>
+    </div>
+
+    <!-- 5. progress bar -->
+    <div class="progress" role="progressbar" aria-label="Progress belajar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="pbar">
+      <div class="row"><span>Progress belajar</span><b id="pct">0%</b></div>
+      <div class="track"><div class="fill" id="pfill"></div></div>
+    </div>
+
+    <!-- 7. label -->
+    <div class="hero-label">Media Pembelajaran Kimia • Interaktif</div>
+
+    <!-- 8. judul besar -->
+    <h1>Ikatan Kovalen Koordinasi</h1>
+
+    <!-- 9. deskripsi singkat -->
+    <p class="desc">Pelajari bagaimana satu atom dapat menyediakan seluruh pasangan elektron untuk ikatan, mulai dari konsep dasar, visualisasi elektron, sampai simulasi pembentukan ion amonium.</p>
+
+    <!-- 10. empat badge fitur -->
+    <div class="badges">
+      <div class="badge">Konsep dasar</div>
+      <div class="badge">Visualisasi elektron</div>
+      <div class="badge">Simulasi bertahap</div>
+      <div class="badge">Kuis interaktif</div>
+    </div>
+
+    <!-- 11. dua tombol -->
+    <div class="hero-btns">
+      <a class="btn btn-gold" href="#slide-2">Mulai Belajar</a>
+      <a class="btn btn-ghost" href="#slide-6">Lihat Simulasi</a>
+    </div>
+
+    <!-- 12. ilustrasi pasangan elektron bebas (N) -->
+    <div class="hero-illus">
+      <svg viewBox="0 0 600 260" role="img" aria-label="Atom nitrogen dengan satu pasangan elektron bebas">
+        <defs>
+          <radialGradient id="gN" cx="35%" cy="30%"><stop offset="0" stop-color="#9bd6ff"/><stop offset="1" stop-color="#1f5fb8"/></radialGradient>
+          <radialGradient id="glow"><stop offset="0" stop-color="#4aa8ff" stop-opacity=".45"/><stop offset="1" stop-color="#4aa8ff" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="300" cy="140" r="130" fill="url(#glow)"/>
+        <g class="orbit">
+          <circle cx="300" cy="140" r="88" fill="none" stroke="#7cc4ff" stroke-opacity=".4" stroke-dasharray="4 8"/>
+          <circle cx="388" cy="140" r="5" fill="#bfe3ff"/>
+          <circle cx="212" cy="140" r="5" fill="#bfe3ff"/>
+          <circle cx="344" cy="216" r="5" fill="#bfe3ff"/>
+        </g>
+        <circle cx="300" cy="140" r="40" fill="url(#gN)"/>
+        <text x="300" y="152" text-anchor="middle" font-family="Sora,sans-serif" font-weight="800" font-size="34" fill="#fff">N</text>
+        <circle cx="291" cy="84" r="6.5" fill="#78b7f2"/>
+        <circle cx="309" cy="84" r="6.5" fill="#78b7f2"/>
+        <line x1="322" y1="80" x2="372" y2="54" stroke="#78b7f2" stroke-width="1.6"/>
+        <text x="378" y="58" font-family="Plus Jakarta Sans,sans-serif" font-size="16" font-weight="600" fill="#78b7f2">pasangan elektron bebas</text>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== SLIDE 2 : PETA PEMBELAJARAN — CARA MENGGUNAKAN + DATA SISWA =================== -->
+<section id="slide-2" class="slide bg-white" aria-label="Peta Pembelajaran: cara menggunakan">
+  <div class="wrap">
+    <div class="accent-title"><i></i><span>Peta Pembelajaran</span></div>
+    <h2 class="sec-title">Bagaimana cara belajar di sini?</h2>
+    <p class="sec-desc">Pelajari materi secara berurutan mulai dari pertanyaan pemantik, konsep dasar, simulasi, kuis akhir, hingga refleksi.</p>
+
+    <div class="card stepper">
+      <h3>Cara Menggunakan</h3>
+      <p class="sec-desc" style="margin-bottom:12px">Baca petunjuk berikut satu per satu dengan menekan tombol Selanjutnya.</p>
+      <div class="st-count" id="cm-count">Petunjuk 1 dari 5</div>
+      <div class="st-body" id="cm-body">
+        <div class="cm-num" id="cm-num">1</div>
+        <div><h4 id="cm-title">Baca materi</h4><p id="cm-text">Baca materi pada setiap bagian dengan teliti agar memahami konsep yang dijelaskan.</p></div>
+      </div>
+      <div class="dots lt" id="cm-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      <div class="st-nav">
+        <button class="btn btn-ghost" id="cm-prev" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" id="cm-next">Selanjutnya →</button>
+      </div>
+      <p class="hint" id="cm-hint">Baca seluruh petunjuk untuk membuka bagian identitas siswa.</p>
+    </div>
+
+    <div class="card id-box" id="student-id-card">
+      <h3>Identitas Siswa</h3>
+      <label for="in-nama">Nama:</label>
+      <input class="sa-in" id="in-nama" type="text" autocomplete="name" placeholder="Masukkan nama">
+      <label for="in-kelas">Kelas:</label>
+      <input class="sa-in" id="in-kelas" type="text" autocomplete="off" placeholder="Masukkan kelas">
+      <p class="hint" id="id-hint">Nama dan kelas digunakan untuk mencatat hasil pengerjaan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SLIDE 3 : CAPAIAN & TUJUAN PEMBELAJARAN, PERTANYAAN PEMANTIK =================== -->
+<section id="slide-3" class="slide bg-white" aria-label="Capaian dan tujuan pembelajaran">
+  <div class="wrap">
+    <div class="accent-title"><i></i><span>Peta Pembelajaran</span></div>
+    <h2 class="sec-title">Apa yang akan kamu pelajari?</h2>
+    <p class="sec-desc">Kenali tujuan pembelajaran dan pikirkan pertanyaan pengantar sebelum masuk ke materi.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Capaian Pembelajaran</h3>
+        <p>Pada akhir Fase F, peserta didik mampu memahami berbagai jenis ikatan kimia dan proses pembentukannya. Peserta didik mampu menjelaskan pembentukan ikatan kovalen koordinasi, menentukan atom donor dan akseptor pasangan elektron, serta menggambarkan pembentukan ikatan kovalen koordinasi menggunakan notasi Lewis.</p>
+      </div>
+      <div class="card">
+        <h3>Tujuan Pembelajaran</h3>
+        <ul>
+          <li>Peserta didik dapat menjelaskan konsep ikatan kovalen</li>
+          <li>Peserta didik dapat membedakan ikatan kovalen dan ikatan kovalen koordinasi setelah melihat simulasi</li>
+          <li>Peserta didik dapat menentukan elektron valensi dan pasangan elektron bebas</li>
+        </ul>
+      </div>
+    </div>
+    <div class="q-box">
+      <h3>Pertanyaan Pemantik</h3>
+      <p class="q">Apa fungsi amonia pada bidang pertanian?</p>
+      <p>Sebelum membahas ikatan kimia, mari mengenal amonia (NH₃), yaitu senyawa yang tersusun dari unsur nitrogen dan hidrogen. Menurutmu, apa peran amonia dalam bidang pertanian? Tuliskan pendapat awalmu sebelum mempelajari materi.</p>
+    </div>
+    <div class="card ans-box">
+      <label for="jawab-awal">Jawabanmu</label>
+      <textarea id="jawab-awal" placeholder="Tulis jawabanmu di sini…"></textarea>
+      <p class="hint" id="awal-count">Tulis minimal 10 karakter (0/10), lalu periksa jawabanmu.</p>
+      <button class="btn btn-primary" id="cek-pemantik" style="align-self:flex-start" disabled>Periksa Jawaban</button>
+      <div class="reason" id="feedback-pemantik" style="display:none;margin-top:12px" aria-live="polite"></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =================== SLIDE 4 : KONSEP DASAR — IKATAN KOVALEN (NH3) + SIMULASI =================== -->
+<section id="slide-4" class="slide bg-paper" aria-label="Konsep dasar: ikatan kovalen">
+  <div class="wrap">
+    <span class="tag">02 • Konsep Dasar</span>
+    <h2 class="sec-title">Mulai dari Ide Sederhana</h2>
+    <p class="sec-desc">Sebelum mempelajari ikatan kovalen koordinasi, pahami dulu bagaimana atom N dan H menggunakan bersama pasangan elektron hingga terbentuk molekul amonia (NH₃).</p>
+    <button class="btn btn-primary" style="align-self:flex-start" data-speak="konsep" data-label="🔊 Dengarkan penjelasan">🔊 Dengarkan penjelasan</button>
+
+    <div class="card def">
+      <h3>1. Ikatan Kovalen</h3>
+      <p>Ikatan kovalen terbentuk ketika dua atom menggunakan bersama pasangan elektron. Contohnya amonia (NH₃): atom N memakai bersama tiga pasangan elektron dengan tiga atom H. Pada struktur Lewis, satu pasangan elektron ikatan dapat ditulis sebagai satu garis.</p>
+      <div class="lewis-fig">
+        <svg viewBox="0 0 600 250" role="img" aria-label="Struktur Lewis NH3: titik elektron dan garis ikatan">
+          <g font-family="Sora,sans-serif" font-weight="700" text-anchor="middle">
+            <!-- notasi titik -->
+            <circle cx="130" cy="125" r="26" fill="#7cc0ff"/><text x="130" y="133" font-size="22" fill="#06142b">N</text>
+            <circle cx="42" cy="125" r="16" fill="#d4f5e6"/><text x="42" y="131" font-size="16" fill="#06142b">H</text>
+            <circle cx="218" cy="125" r="16" fill="#d4f5e6"/><text x="218" y="131" font-size="16" fill="#06142b">H</text>
+            <circle cx="130" cy="214" r="16" fill="#d4f5e6"/><text x="130" y="220" font-size="16" fill="#06142b">H</text>
+            <g><circle cx="80" cy="118" r="3.6" fill="#367fc2"/><circle cx="80" cy="132" r="3.6" fill="#25a982"/><circle cx="180" cy="118" r="3.6" fill="#367fc2"/><circle cx="180" cy="132" r="3.6" fill="#25a982"/><circle cx="123" cy="170" r="3.6" fill="#367fc2"/><circle cx="137" cy="170" r="3.6" fill="#25a982"/></g>
+            <g fill="#d6a52c"><circle cx="123" cy="84" r="3.6"/><circle cx="137" cy="84" r="3.6"/></g>
+            <!-- panah -->
+            <text x="300" y="134" font-size="34" fill="#5a6a82">⇄</text>
+            <!-- rumus bangun -->
+            <circle cx="470" cy="125" r="26" fill="#7cc0ff"/><text x="470" y="133" font-size="22" fill="#06142b">N</text>
+            <circle cx="382" cy="125" r="16" fill="#d4f5e6"/><text x="382" y="131" font-size="16" fill="#06142b">H</text>
+            <circle cx="558" cy="125" r="16" fill="#d4f5e6"/><text x="558" y="131" font-size="16" fill="#06142b">H</text>
+            <circle cx="470" cy="214" r="16" fill="#d4f5e6"/><text x="470" y="220" font-size="16" fill="#06142b">H</text>
+            <g stroke="#367fc2" stroke-width="3.4"><line x1="398" y1="125" x2="444" y2="125"/><line x1="496" y1="125" x2="542" y2="125"/><line x1="470" y1="151" x2="470" y2="198"/></g>
+            <g fill="#d6a52c"><circle cx="463" cy="84" r="3.6"/><circle cx="477" cy="84" r="3.6"/></g>
+          </g>
+          <g font-family="Plus Jakarta Sans,sans-serif" font-size="13" font-weight="600" fill="#5a6a82" text-anchor="middle">
+            <text x="130" y="52">pasangan bebas</text>
+            <text x="470" y="52">pasangan bebas</text>
+          </g>
+        </svg>
+        <div class="legend-dot" style="flex-wrap:wrap;margin-top:10px"><span><i class="inner-dot" style="background:#367fc2"></i> Elektron dari N</span><span><i class="inner-dot" style="background:#25a982"></i> Elektron dari H</span><span><i class="inner-dot" style="background:#d6a52c"></i> Pasangan elektron bebas</span></div><small>Pada setiap ikatan N—H terdapat satu elektron dari N dan satu elektron dari H. Dua elektron berwarna emas di atas N adalah pasangan elektron bebas.</small>
+      </div>
+    </div>
+
+    <div class="card def">
+      <h3>2. Ikatan Kovalen Koordinasi</h3>
+      <p>Ikatan kovalen koordinasi terbentuk ketika pasangan elektron yang dipakai bersama berasal dari satu atom saja. Atom yang menyediakan pasangan elektron disebut <b>donor</b>, sedangkan partikel yang menerima pasangan elektron disebut <b>akseptor</b>.</p>
+      <div class="lewis-fig">
+        <svg viewBox="0 0 600 230" role="img" aria-label="Pembentukan ikatan kovalen koordinasi dari NH3 dan H plus">
+          <g font-family="Sora,sans-serif" font-weight="700" text-anchor="middle">
+            <circle cx="125" cy="112" r="27" fill="#7cc0ff"/><text x="125" y="120" font-size="22" fill="#06142b">N</text>
+            <circle cx="45" cy="112" r="17" fill="#d4f5e6"/><text x="45" y="118" font-size="16" fill="#06142b">H</text>
+            <circle cx="205" cy="112" r="17" fill="#d4f5e6"/><text x="205" y="118" font-size="16" fill="#06142b">H</text>
+            <circle cx="125" cy="192" r="17" fill="#d4f5e6"/><text x="125" y="198" font-size="16" fill="#06142b">H</text>
+            <g fill="#d6a52c"><circle cx="118" cy="68" r="4"/><circle cx="132" cy="68" r="4"/></g>
+            <text x="300" y="122" font-size="32" fill="#5a6a82">+</text>
+            <circle cx="365" cy="112" r="22" fill="#ff9ca8"/><text x="365" y="119" font-size="17" fill="#4b1720">H⁺</text>
+            <path d="M155 68 Q245 15 340 88" fill="none" stroke="#d6a52c" stroke-width="3" stroke-dasharray="6 5"/><path d="M330 78 L343 90 L327 93" fill="none" stroke="#d6a52c" stroke-width="3"/>
+            <text x="485" y="119" font-size="28" fill="#5a6a82">→</text>
+            <circle cx="545" cy="112" r="27" fill="#7cc0ff"/><text x="545" y="120" font-size="22" fill="#06142b">N</text>
+            <circle cx="545" cy="55" r="16" fill="#ff9ca8"/><text x="545" y="61" font-size="15" fill="#4b1720">H</text>
+            <line x1="545" y1="82" x2="545" y2="70" stroke="#d6a52c" stroke-width="4"/>
+          </g>
+          <g font-family="Plus Jakarta Sans,sans-serif" font-size="13" font-weight="600" fill="#5a6a82" text-anchor="middle"><text x="125" y="30">pasangan bebas N</text><text x="365" y="155">akseptor</text><text x="545" y="165">ikatan koordinasi</text></g>
+        </svg>
+        <small>Pasangan elektron bebas pada N didonasikan kepada H⁺. Kedua elektron dalam ikatan baru berasal dari N, sehingga N bertindak sebagai donor dan H⁺ sebagai akseptor.</small>
+      </div>
+    </div>
+    <div class="note"><b>Ingat:</b> inti ikatan kovalen adalah pemakaian bersama pasangan elektron. Pasangan itu tidak berpindah penuh ke salah satu atom.</div>
+
+
+    <div class="card def">
+      <h3>3. Menentukan Konfigurasi Elektron dan Elektron Valensi</h3>
+      <p><b>Konfigurasi elektron</b> menunjukkan pembagian elektron ke dalam kulit atom. Elektron mengisi kulit dari bagian paling dekat dengan inti. <b>Elektron valensi</b> adalah elektron pada kulit terluar.</p>
+      <div class="shell-visual" role="img" aria-label="Ilustrasi kulit atom dan kapasitas maksimum elektron">
+        <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-labelledby="shellTitle shellDesc">
+          <title id="shellTitle">Ilustrasi kulit elektron atom</title>
+          <desc id="shellDesc">Empat kulit atom tersusun konsentris dari inti: K, L, M, dan N. Kapasitas maksimum masing-masing kulit adalah 2, 8, 18, dan 32 elektron. Elektron valensi berada pada kulit terluar yang terisi.</desc>
+          <defs><linearGradient id="shellBg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#edf4ff"/><stop offset="1" stop-color="#fff"/></linearGradient></defs>
+          <rect x="4" y="4" width="892" height="352" rx="22" fill="url(#shellBg2)" stroke="#d4e2f7" stroke-width="2"/>
+          <g transform="translate(220 178)">
+            <circle r="128" fill="none" stroke="#9bb8e5" stroke-width="3"/><circle r="96" fill="none" stroke="#7398d2" stroke-width="3"/><circle r="64" fill="none" stroke="#4e79bb" stroke-width="3"/><circle r="32" fill="none" stroke="#315da8" stroke-width="3"/>
+            <circle r="17" fill="#f6b36a" stroke="#d58b3d" stroke-width="2"/><text y="5" text-anchor="middle" font-size="12" font-weight="700" fill="#563311">inti</text>
+            <g fill="#2457a6" stroke="#fff" stroke-width="2"><circle cx="0" cy="-32" r="6"/><circle cx="0" cy="32" r="6"/><circle cx="-64" cy="0" r="6"/><circle cx="64" cy="0" r="6"/><circle cx="-68" cy="-68" r="6"/><circle cx="68" cy="-68" r="6"/><circle cx="-68" cy="68" r="6"/><circle cx="68" cy="68" r="6"/></g>
+            <g font-size="16" font-weight="800" fill="#24477f"><text x="25" y="-20">K</text><text x="48" y="-38">L</text><text x="72" y="-57">M</text><text x="96" y="-78">N</text></g>
+          </g>
+          <g transform="translate(430 62)">
+            <text x="0" y="0" font-size="23" font-weight="800" fill="#24477f">Kulit atom dari dalam ke luar</text>
+            <g font-size="18" fill="#19365f">
+              <rect x="0" y="22" width="400" height="43" rx="10" fill="#dce9fb"/><text x="18" y="50" font-weight="800">K</text><text x="100" y="50">maksimal 2 elektron</text>
+              <rect x="0" y="73" width="400" height="43" rx="10" fill="#fff" stroke="#d4e2f7"/><text x="18" y="101" font-weight="800">L</text><text x="100" y="101">maksimal 8 elektron</text>
+              <rect x="0" y="124" width="400" height="43" rx="10" fill="#dce9fb"/><text x="18" y="152" font-weight="800">M</text><text x="100" y="152">maksimal 18 elektron</text>
+              <rect x="0" y="175" width="400" height="43" rx="10" fill="#fff" stroke="#d4e2f7"/><text x="18" y="203" font-weight="800">N</text><text x="100" y="203">maksimal 32 elektron</text>
+            </g>
+            <rect x="0" y="237" width="400" height="47" rx="12" fill="#24477f"/><text x="18" y="266" font-size="17" font-weight="700" fill="#fff">Elektron valensi = elektron di kulit terluar</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="card atom-explorer">
+      <h3>Amati model atom dan elektron pada kulitnya</h3>
+      <p>Pilih unsur untuk melihat jumlah elektron pada setiap kulit. Nama kulit K, L, M, dan N ditampilkan langsung di samping masing-masing lingkaran pada gambar. Elektron bergerak mengelilingi inti; warna emas menandai elektron pada kulit terluar. Jumlah elektron tiap kulit terlihat pada tabel di samping.</p>
+      <div class="atom-picks" id="atom-picks">
+        <button type="button" class="pick on" data-z="1">H (1)</button><button type="button" class="pick" data-z="6">C (6)</button><button type="button" class="pick" data-z="7">N (7)</button><button type="button" class="pick" data-z="8">O (8)</button><button type="button" class="pick" data-z="11">Na (11)</button><button type="button" class="pick" data-z="17">Cl (17)</button><button type="button" class="pick" data-z="19">K (19)</button>
+      </div>
+      <div class="atom-view-grid"><div class="atom-orbit-view" id="atom-orbit-view" aria-label="Model kulit elektron interaktif"></div><div class="atom-facts"><h3 id="atom-name">Hidrogen (H)</h3><p id="atom-z">Nomor atom Z = 1</p><h3 class="atom-config" id="atom-config">Konfigurasi: 1</h3><div id="atom-shell-table"></div><p class="valence-callout" id="atom-valence">Elektron valensi H = 1 (kulit K)</p></div></div>
+      <small class="legend-dot"><i class="inner-dot"></i> elektron kulit dalam <i class="gold-dot"></i> elektron valensi</small>
+    </div>
+    <div class="card def">
+      <h3>4. Latihan menentukan konfigurasi elektron dan elektron valensi</h3>
+      <p>Isi konfigurasi elektron per kulit dengan angka yang dipisahkan spasi. Setelah itu, tuliskan jumlah elektron pada kulit terluar sebagai elektron valensi.</p>
+      <div class="grid2">
+        <div class="card practice-atom"><h3>Nitrogen (N)</h3><p>Nomor atom (Z) = 7</p><label>Konfigurasi elektron N</label><input id="cfg-n" placeholder="Contoh format: 2 8"><label>Elektron valensi N</label><input id="val-n" placeholder="Jumlah elektron valensi"></div>
+        <div class="card practice-atom"><h3>Hidrogen (H)</h3><p>Nomor atom (Z) = 1</p><label>Konfigurasi elektron H</label><input id="cfg-h" placeholder="Contoh format: 2 8"><label>Elektron valensi H</label><input id="val-h" placeholder="Jumlah elektron valensi"></div>
+      </div>
+      <button class="btn btn-primary" id="check-config" type="button">Periksa Jawaban</button><div class="reason" id="config-feedback" style="display:none" aria-live="polite"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== SLIDE 5 : KONSEP DASAR — KOVALEN KOORDINASI (SIMULASI INTERAKTIF), ELEKTRON VALENSI N & H =================== -->
+
+<!-- =================== SLIDE 5 : SIMULASI IKATAN KOVALEN NH3 =================== -->
+<section id="slide-5" class="slide bg-paper" aria-label="Simulasi ikatan kovalen NH3">
+  <div class="wrap"><span class="tag">03 • Simulasi NH₃</span><h2 class="sec-title">Amati Pembentukan Ikatan Kovalen NH₃</h2><p class="sec-desc">Setelah memahami elektron valensi, amati bagaimana tiga atom H menggunakan bersama pasangan elektron dengan atom N.</p>
+    <div class="card">
+      <h3>Simulasi Pembentukan Ikatan Kovalen NH₃</h3>
+      <p>Amati bagaimana tiga atom H membentuk ikatan kovalen dengan atom N.</p>
+      <div class="stage-ind" style="margin-top:12px">
+        <span class="stage-pill" id="cov-pill">Tahap 1/4</span>
+        <div class="dots lt" id="cov-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div class="sim-area">
+      <div class="hd"><b>Simulasi NH₃</b><span id="cov-title">Atom-atom terpisah</span></div>
+      <svg id="cov-svg" viewBox="0 0 600 340" role="img" aria-label="Animasi pembentukan NH3"></svg>
+      <div class="legend-dot" style="flex-wrap:wrap;margin:10px 0"><span><i class="inner-dot" style="background:#367fc2"></i> Elektron dari N</span><span><i class="inner-dot" style="background:#25a982"></i> Elektron dari H</span><span><i class="inner-dot" style="background:#d6a52c"></i> Pasangan elektron bebas</span></div>
+      <p class="cap" id="cov-cap"></p>
+    </div>
+    <div class="sim-btns">
+      <button class="btn btn-ghost" id="cov-prev">← Sebelumnya</button>
+      <button class="btn btn-primary" id="cov-next">Berikutnya →</button>
+      <button class="btn btn-ghost" id="cov-reset">↻ Ulangi Simulasi</button>
+    </div>
+
+    <div class="card tang">
+      <h3>Apa yang telah kamu pahami?</h3>
+      <p class="q2">Setelah melihat simulasi ikatan kovalen NH₃ di atas, apa yang telah kamu pahami? Jelaskan dengan kata-katamu sendiri.</p>
+      <textarea id="tang-4" placeholder="Tulis tanggapanmu di sini…"></textarea>
+      <p class="hint" id="tang4-count">Tulis minimal 10 karakter (0/10).</p>
+      <button class="btn btn-primary" id="check-tang4" type="button">Periksa Tanggapan</button><div class="reason" id="feedback-tang4" style="display:none" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =================== SLIDE 6 : SIMULASI VISUAL =================== -->
+<section id="slide-6" class="slide sim" aria-label="Simulasi visual">
+  <div class="wrap">
+    <span class="tag">03 • Simulasi Visual</span>
+    <h2 class="sec-title">Simulasi Pembentukan Ion Amonium (NH₄⁺)</h2>
+    <p class="sec-desc">Amati bagaimana NH₃ berikatan dengan H⁺ hingga terbentuk NH₄⁺.</p>
+    <div class="stage-ind">
+      <span class="stage-pill" id="stage-pill">Tahap 1/4</span>
+      <div class="dots" id="stage-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="sim-area">
+      <div class="hd"><b>Simulasi NH₄⁺</b><span>Elektron valensi dan pasangan bebas</span></div>
+      <svg id="sim-svg" viewBox="0 0 600 340" role="img" aria-label="Animasi susunan elektron nitrogen"></svg>
+      <div class="sim-interaction-hint" id="sim-interaction-hint" aria-live="polite">Amati susunan elektron pada atom nitrogen.</div>
+      <div class="sim-foot">
+        <p class="cap" id="sim-cap">Amati susunan elektron nitrogen.</p>
+        <button class="btn btn-gold" id="sim-speak" data-label="🔊 Putar penjelasan">🔊 Putar penjelasan</button>
+      </div>
+    </div>
+    <div class="sim-btns">
+      <button class="btn btn-ghost" id="sim-prev">← Sebelumnya</button>
+      <button class="btn btn-gold" id="sim-next">Berikutnya →</button>
+      <button class="btn btn-ghost" id="sim-reset">↻ Ulangi Simulasi</button>
+    </div>
+    <div class="flow">
+      <div class="st" id="flow-st">Tahap 1 dari 6</div>
+      <h3 id="flow-title">Susunan elektron atom N</h3>
+      <ol id="flow-list"></ol>
+    </div>
+    <div class="challenge">
+      <h3>Tantangan: tentukan donor dan akseptor</h3>
+      <p>Pilih partikel yang berperan sebagai donor dan akseptor pada reaksi NH₃ + H⁺ → NH₄⁺.</p>
+      <div class="grid2"><div><label for="donor-choice">Donor pasangan elektron</label><select id="donor-choice"><option value="">Pilih jawaban</option><option value="N">Atom nitrogen (N) pada NH₃</option><option value="H">Ion hidrogen (H⁺)</option></select></div><div><label for="acceptor-choice">Akseptor pasangan elektron</label><select id="acceptor-choice"><option value="">Pilih jawaban</option><option value="N">Atom nitrogen (N) pada NH₃</option><option value="H">Ion hidrogen (H⁺)</option></select></div></div>
+      <button class="btn btn-gold" id="check-donor" type="button">Periksa Pilihan</button><div class="reason" id="donor-feedback" style="display:none" aria-live="polite"></div>
+    </div>
+    <div class="card tang dark">
+      <h3>Apa yang telah kamu pahami?</h3>
+      <p class="q2">Apa yang telah kamu pahami setelah melihat simulasi ini? Jelaskan bagaimana NH₃ dan H⁺ dapat membentuk NH₄⁺.</p>
+      <textarea id="tang-6" placeholder="Tulis tanggapanmu di sini…"></textarea>
+      <p class="hint" id="tang6-count">Tulis minimal 10 karakter (0/10).</p>
+      <button class="btn btn-gold" id="check-tang6" type="button">Periksa Tanggapan</button><div class="reason" id="feedback-tang6" style="display:none" aria-live="polite"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== SLIDE 7 : SIMULASI H3O+ =================== -->
+<section id="slide-7" class="slide bg-paper" aria-label="Simulasi pembentukan ion hidronium">
+  <div class="wrap"><span class="tag">05 • Simulasi H₃O⁺</span><h2 class="sec-title">Pembentukan Ion Hidronium (H₃O⁺)</h2><p class="sec-desc">Kenali konfigurasi elektron H dan O, lalu gerakkan ion H⁺ mendekati molekul air untuk mengamati pembentukan ikatan kovalen koordinasi.</p>
+    <div class="card def" style="margin-top:22px">
+      <h3>Persiapan: mengenal atom H dan O</h3>
+      <p>Amati model atom H dan O di atas. Gunakan informasi pada model untuk menentukan konfigurasi elektron dan jumlah elektron valensi masing-masing atom.</p>
+      <div class="grid2"><div class="card atomcard"><h3>Model atom H</h3><svg viewBox="0 0 220 170" role="img" aria-label="Atom hidrogen dengan satu elektron pada kulit K"><circle cx="110" cy="82" r="45" fill="none" stroke="#7185a8" stroke-dasharray="4 4"/><circle cx="110" cy="82" r="19" fill="#2457b5"/><text x="110" y="88" text-anchor="middle" fill="white" font-weight="bold">H</text><circle cx="110" cy="37" r="6" fill="#d6a52c" class="atom-electron"/><text x="164" y="43" fill="currentColor">K</text></svg></div><div class="card atomcard"><h3>Model atom O</h3><svg viewBox="0 0 220 170" role="img" aria-label="Atom oksigen dengan dua elektron inti pada kulit K dan enam elektron valensi pada kulit L"><circle cx="110" cy="82" r="35" fill="none" stroke="#7185a8" stroke-dasharray="4 4"/><circle cx="110" cy="82" r="65" fill="none" stroke="#7185a8" stroke-dasharray="4 4"/><circle cx="110" cy="82" r="19" fill="#2457b5"/><text x="110" y="88" text-anchor="middle" fill="white" font-weight="bold">O</text><circle cx="110" cy="47" r="5" fill="#dbeafe"/><circle cx="110" cy="117" r="5" fill="#dbeafe"/><g fill="#d6a52c"><circle cx="175.0" cy="82.0" r="5" class="atom-electron"/><circle cx="142.5" cy="138.3" r="5" class="atom-electron"/><circle cx="77.5" cy="138.3" r="5" class="atom-electron"/><circle cx="45.0" cy="82.0" r="5" class="atom-electron"/><circle cx="77.5" cy="25.7" r="5" class="atom-electron"/><circle cx="142.5" cy="25.7" r="5" class="atom-electron"/></g><text x="165" y="47" fill="currentColor">L</text><text x="147" y="66" fill="currentColor">K</text></svg></div></div>
+      <div class="card" style="margin-top:12px;background:#eef5ff;border-left:4px solid #3979c9"><b>Petunjuk:</b> Amati jumlah dan letak elektron pada model atom. Gunakan hasil pengamatanmu untuk menjawab pertanyaan konfigurasi elektron dan elektron valensi di bawah ini.</div>
+      <div class="grid2"><div class="card practice-atom"><h3>Hidrogen (H)</h3><p>Nomor atom (Z) = 1</p><label for="cfg-hydro-h">Konfigurasi elektron:</label><input id="cfg-hydro-h" type="text" inputmode="text" placeholder="Tulis konfigurasi elektron"><label for="val-hydro-h">Elektron valensi:</label><input id="val-hydro-h" type="number" min="0" max="2" placeholder="Tulis jumlah elektron valensi"></div><div class="card practice-atom"><h3>Oksigen (O)</h3><p>Nomor atom (Z) = 8</p><label for="cfg-o">Konfigurasi elektron:</label><input id="cfg-o" type="text" inputmode="text" placeholder="Tulis konfigurasi elektron"><label for="val-o">Elektron valensi:</label><input id="val-o" type="number" min="0" max="8" placeholder="Tulis jumlah elektron valensi"></div></div>
+      <button class="btn btn-primary" id="check-hydro-config" type="button">Periksa Konfigurasi H dan O</button><div class="reason" id="hydro-config-feedback" style="display:none" aria-live="polite"></div>
+    </div>
+    <div class="card def" style="margin-top:22px">
+      <h3>Simulasi Mandiri: Susun H₂O lalu bentuk H₃O⁺</h3>
+      <p>Ikuti prosesnya secara bertahap. Mula-mula, seret atom H netral pertama ke O, lalu seret atom H netral kedua. Setiap H menyumbangkan satu elektron untuk dipakai bersama dengan satu elektron dari O sehingga terbentuk dua ikatan kovalen O–H dan molekul H₂O.</p><p>Setelah H₂O terbentuk, perhatikan bahwa O masih memiliki <b>dua pasangan elektron bebas</b>. Berikutnya, seret ion H⁺ (bukan atom H netral) ke arah salah satu pasangan elektron bebas tersebut. H⁺ menerima pasangan elektron dari O untuk membentuk ikatan kovalen koordinasi. <b>Satu pasangan elektron bebas lainnya tetap berada pada O.</b></p>
+      <p class="hint" style="margin-top:8px"><b>Catatan model:</b> Simulasi ikatan ini menonjolkan elektron valensi pada kulit L, bukan menggambarkan seluruh kulit atom. Dua elektron inti pada kulit K tetap ada di sekitar inti oksigen, tetapi tidak ikut membentuk ikatan O–H.</p>
+    </div>
+    <div class="sim-area">
+      <div class="hd"><b>Simulasi O → H₂O → H₃O⁺</b><span id="hydro-state">Atom O siap menerima H</span></div>
+      <div class="card" id="hydro-explain" style="margin:10px 0;background:#eef5ff;color:#17345f"><b>Amati dahulu.</b> O memiliki enam elektron valensi. Dua atom H akan membentuk dua ikatan O–H dengan O.</div>
+      <svg id="hydro-svg" viewBox="0 0 600 320" role="img" aria-label="Simulasi interaktif penambahan dua atom hidrogen pada oksigen lalu ion hidrogen"></svg>
+      <p class="cap" id="hydro-cap">Seret atom H dari sisi kanan ke area di samping O untuk memulai.</p>
+    </div>
+    <div class="card tang"><h3>Apa yang kamu pahami?</h3><p class="q2">Bagaimana H₂O dan H⁺ dapat membentuk H₃O⁺? Jelaskan asal pasangan elektron yang digunakan.</p><textarea id="tang-hydro" placeholder="Tulis tanggapanmu di sini…"></textarea><p class="hint" id="tang-hydro-count">Tulis minimal 10 karakter (0/10).</p><button class="btn btn-primary" id="check-hydro-answer" type="button">Periksa Tanggapan</button><div class="reason" id="hydro-answer-feedback" style="display:none" aria-live="polite"></div></div>
+  </div>
+</section>
+
+<!-- =================== SLIDE 7 : KUIS AKHIR =================== -->
+<section id="slide-8" class="slide bg-paper" aria-label="Kuis akhir">
+  <div class="wrap">
+    <span class="tag">06 • Uji Pemahaman</span>
+    <h2 class="sec-title">Uji Pemahamanmu</h2>
+    <p class="sec-desc">Kerjakan tiga soal esai singkat berikut sesuai materi yang telah dipelajari. Jawab dengan kalimatmu sendiri. Jawabanmu akan tersimpan dalam rekap hasil belajar.</p>
+    <div class="card quiz-bar"><span id="kuis-ind">Soal 1 dari 3</span><span class="sc" id="kuis-skor">3 soal esai</span></div>
+    <div class="card" id="kuis-area" aria-live="polite"></div>
+    <button class="btn btn-primary" id="kuis-next" style="align-self:flex-start" disabled>Soal Berikutnya →</button>
+  </div>
+</section>
+
+<!-- =================== SLIDE 8 : RINGKASAN (ONE-MINUTE REVIEW) =================== -->
+<section id="slide-9" class="slide bg-white" aria-label="Ringkasan">
+  <div class="wrap">
+    <span class="tag">07 • Ringkasan</span>
+    <h2 class="sec-title">Ringkasan Materi</h2>
+    <div class="grid4">
+      <div class="card rc"><div class="n">01</div><h3>Ikatan kovalen</h3><p>Atom memakai bersama pasangan elektron, misalnya N dengan 3 H pada NH₃.</p></div>
+      <div class="card rc"><div class="n">02</div><h3>Donor</h3><p>Atom atau molekul yang menyediakan pasangan elektron bebas.</p></div>
+      <div class="card rc"><div class="n">03</div><h3>Akseptor</h3><p>Partikel yang menerima pasangan elektron dan memiliki ruang untuk menerima pasangan elektron.</p></div>
+      <div class="card rc"><div class="n">04</div><h3>Contoh koordinasi</h3><p>NH₃ + H⁺ → NH₄⁺ dan H₂O + H⁺ → H₃O⁺. Pasangan bebas N atau O didonasikan kepada H⁺.</p></div>
+    </div>
+
+    <div class="q-box">
+      <h3>🎓 Pertanyaan refleksi</h3>
+      <p class="q">Kembali ke pertanyaan pemantik: apa fungsi amonia (NH₃) pada bidang pertanian?</p>
+      <p style="margin-bottom:12px">Setelah belajar, jelaskan ulang jawabanmu. Tambahkan juga penjelasan bagaimana NH₃ dapat berikatan dengan H⁺ membentuk NH₄⁺.</p>
+      <textarea id="refleksi" aria-label="Jawaban refleksi" placeholder="Tulis refleksimu di sini…"></textarea>
+      <p class="hint" id="refl-count">Tulis minimal 10 karakter (0/10).</p>
+    </div>
+    <div class="save-row">
+      <button class="btn btn-primary" id="save-ref">Simpan &amp; kirim jawaban</button>
+      <button class="btn btn-ghost" id="btn-xlsx">⬇ Unduh hasilku (Excel)</button>
+      <span class="msg" id="save-msg" aria-live="polite"></span>
+    </div>
+    <div class="sync-line" id="sync-line" aria-live="polite"></div>
+    <div class="foot">
+      <span><b>CHEM-BOND</b> • Ikatan Kovalen Koordinasi</span>
+      <span class="foot-btns"><button class="btn btn-ghost" id="open-guru">🔐 Mode Guru</button><a class="btn btn-gold" href="#slide-1">↑ Kembali ke atas</a></span>
+    </div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<div class="gate-pill" id="gate-pill" role="status" aria-live="polite"></div>
+<nav class="navbar" aria-label="Navigasi slide">
+  <button class="btn btn-ghost" id="nav-prev">← Sebelumnya</button>
+  <div class="mid"><span id="nav-count">Slide 1 / 9</span><div class="ndots" id="nav-dots"></div></div>
+  <button class="btn btn-gold" id="nav-next">Berikutnya →</button>
+</nav>
+
+<!-- =================== MODAL : MODE GURU (REKAP HASIL SISWA) =================== -->
+<div class="modal" id="guru-modal" role="dialog" aria-modal="true" aria-labelledby="guru-title">
+  <div class="modal-card wide">
+    <div class="top"><h3 id="guru-title">Rekap Hasil Siswa</h3><button class="x" id="guru-close" aria-label="Tutup">✕</button></div>
+    <div class="guru-login" id="guru-login">
+      <p id="guru-mode"></p>
+      <div class="sa"><input class="sa-in" id="guru-pin" type="password" placeholder="PIN guru" autocomplete="off"><button class="btn btn-primary" id="guru-load">Muat data</button></div>
+    </div>
+    <div class="sa-msg" id="guru-msg" aria-live="polite"></div>
+    <div class="tbl-wrap" id="guru-table"></div>
+    <div class="mod-ctl">
+      <button class="btn btn-primary" id="guru-xlsx" disabled>⬇ Unduh Excel (.xlsx)</button>
+      <button class="btn btn-ghost" id="guru-copy" disabled>Salin untuk Excel</button>
+      <span class="cnt" id="guru-count"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =====================================================================
+     PENGATURAN SINKRONISASI EXCEL
+     Tempel URL "Web app" Google Apps Script di antara tanda kutip di bawah ini.
+     Contoh: "https://script.google.com/macros/s/AKfycb.../exec"
+     Jika dikosongkan, hasil hanya tersimpan di perangkat siswa dan dapat
+     diunduh sebagai file Excel.
+     ===================================================================== */
+  var SYNC_URL = "https://script.google.com/macros/s/AKfycbzg_beD7EKKhvmQQrBMDuj2u6sryX0OpT-m-HwRBRO-tiyzP1ltINl10UfCiQtYrwpjbQ/exec";
+  var MIN_CHARS = 10;
+
+  var $ = function(s,r){return (r||document).querySelector(s)};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function val(sel){ var e=$(sel); return e?String(e.value||"").trim():""; }
+  function len(sel){ return val(sel).length; }
+
+  var slides=$$(".deck > .slide"), N=slides.length, cur=1, done={};
+  var S={sim4:false,sim5:false,sim6:false,hydroSim:false,promptChecked:false,quiz:false,refl:false,configChecked:false};
+  var cmRead=[false,false,false,false,false];
+
+  /* =====================================================
+     SYARAT MEMBUKA TAHAP BERIKUTNYA
+     ===================================================== */
+  var GATES={
+    2:function(){ var m=[];
+      if(!cmRead.every(Boolean)) m.push("baca seluruh petunjuk penggunaan");
+      if(len("#in-nama")<3) m.push("isi nama siswa");
+      if(len("#in-kelas")<1) m.push("isi kelas siswa");
+      return m; },
+    3:function(){ var m=[]; if(len("#jawab-awal")<MIN_CHARS) m.push("tulis jawaban pertanyaan pemantik (min. "+MIN_CHARS+" karakter)"); if(!S.promptChecked) m.push("tekan Periksa Jawaban untuk melihat umpan balik"); return m; },
+    4:function(){ return S.configChecked?[]:["isi dan periksa konfigurasi elektron serta elektron valensi N dan H"]; },
+    5:function(){ var m=[];
+      if(!S.sim4) m.push("amati simulasi ikatan kovalen NH₃ sampai selesai");
+      if(len("#tang-4")<MIN_CHARS || !window.tang4Checked) m.push("periksa tanggapan simulasi NH₃");
+      return m; },
+    6:function(){ var m=[];
+      if(!S.sim6) m.push("jalankan simulasi NH₄⁺ sampai Tahap 6/6");
+      if(len("#tang-6")<MIN_CHARS || !window.tang6Checked) m.push("periksa tanggapan simulasi NH₄⁺");
+      if(!window.donorChecked) m.push("tentukan donor dan akseptor lalu periksa pilihan");
+      return m; },
+    7:function(){ var m=[]; if(!window.hydroConfigChecked) m.push("periksa konfigurasi elektron H dan O"); if(!S.hydroSim) m.push("selesaikan simulasi H₂O + H⁺ sampai H₃O⁺ terbentuk"); if(len("#tang-hydro")<MIN_CHARS || !window.hydroAnswerChecked) m.push("periksa tanggapan pembentukan H₃O⁺"); return m; },
+    8:function(){ return S.quiz?[]:["jawab dan simpan sepuluh soal esai"]; },
+    9:function(){ return S.refl?[]:["tulis refleksi lalu tekan Simpan & kirim jawaban"]; }
+  };
+  function gateMsg(k){
+    var m=GATES[k]?GATES[k]():[];
+    if(!m.length) return "";
+    return "🔒 Selesaikan bagian sebelumnya terlebih dahulu.";
+  }
+  function allowed(n){ for(var k=2;k<n;k++){ if(!done[k]) return false; } return true; }
+  function firstBlocked(n){ for(var k=2;k<n;k++){ if(!done[k]) return k; } return 0; }
+  function doneCount(){ var c=0; for(var k=1;k<=N;k++){ if(done[k]) c++; } return c; }
+  function progressPct(){ return Math.round(doneCount()/N*100); }
+
+  var pillT=null;
+  function pill(msg,ok,ms,shake){
+    var p=$("#gate-pill");
+    p.textContent=msg; p.className="gate-pill show"+(ok?" ok":"");
+    if(shake){ void p.offsetWidth; p.classList.add("shake"); }
+    clearTimeout(pillT);
+    if(ms){ pillT=setTimeout(function(){ p.classList.remove("show"); },ms); }
+  }
+  function hidePill(){ clearTimeout(pillT); $("#gate-pill").classList.remove("show"); }
+
+  var dotsBox=$("#nav-dots");
+  dotsBox.innerHTML=slides.map(function(s,i){return '<button aria-label="Ke slide '+(i+1)+'" data-go="'+(i+1)+'"></button>';}).join("");
+
+  function refresh(){
+    var p=progressPct();
+    $("#pct").textContent=p+"%"; $("#pfill").style.width=p+"%"; $("#pbar").setAttribute("aria-valuenow",p);
+    $("#tb-pct").textContent=p+"%"; $("#tb-fill").style.width=p+"%";
+    document.body.classList.toggle("s1",cur===1);
+    $("#nav-count").textContent="Slide "+cur+" / "+N;
+    $("#nav-prev").disabled=(cur===1);
+    var nx=$("#nav-next");
+    nx.disabled=(cur===N);
+    nx.classList.toggle("locked",cur<N && !allowed(cur+1));
+    nx.textContent="Berikutnya →";
+    $$("#nav-dots button").forEach(function(b,i){ b.classList.toggle("on",i+1===cur); b.classList.toggle("lock",i+1>cur && !allowed(i+1)); });
+    $$('.nav a[href^="#slide-"]').forEach(function(a){
+      var n=parseInt(a.getAttribute("href").replace("#slide-",""),10);
+      a.classList.toggle("locked",n>cur && !allowed(n));
+    });
+  }
+
+  function goTo(n){
+    n=Math.max(1,Math.min(N,n));
+    if(n>cur && !allowed(n)){
+      pill("Selesaikan bagian ini terlebih dahulu untuk membuka slide berikutnya.",false,2200,true);
+      return;
+    }
+    var changed=(n!==cur);
+    if(changed && cur===1 && n>1){ done[1]=true; }
+    cur=n;
+    var dk=$("#deck"); dk.scrollLeft=0; dk.scrollTop=0;
+    slides.forEach(function(s,i){
+      var on=(i+1===n);
+      s.classList.toggle("active",on);
+      s.setAttribute("aria-hidden",on?"false":"true");
+      if(on){ s.removeAttribute("inert"); if(changed) s.scrollTop=0; } else { s.setAttribute("inert",""); }
+    });
+    if(changed){ stopSpeak(); }
+    refresh();
+    if(changed){ hidePill(); }
+    try{ history.replaceState(null,"","#slide-"+n); }catch(e){}
+  }
+
+  function complete(k,quiet){
+    if(done[k]) return;
+    done[k]=true; refresh();
+    scheduleSync();
+    if(k===cur && !quiet){
+      if(k===N) pill("🎉 Selamat! Semua tahap sudah kamu selesaikan.",true,5500);
+      else pill("✓ Tahap selesai! Tekan Berikutnya untuk lanjut.",true,3200);
+    }
+  }
+  function evalGate(k){ if(GATES[k] && !done[k] && GATES[k]().length===0){ complete(k); } }
+
+  $("#deck").addEventListener("scroll",function(){ if(this.scrollLeft||this.scrollTop){ this.scrollLeft=0; this.scrollTop=0; } });
+  $("#nav-prev").addEventListener("click",function(){goTo(cur-1);});
+  $("#nav-next").addEventListener("click",function(){goTo(cur+1);});
+  dotsBox.addEventListener("click",function(e){ var b=e.target.closest("button[data-go]"); if(b) goTo(+b.dataset.go); });
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#slide-"]');
+    if(a){ e.preventDefault(); goTo(parseInt(a.getAttribute("href").replace("#slide-",""),10)); }
+  });
+  function modalOpen(){ return $("#guru-modal").classList.contains("open"); }
+  document.addEventListener("keydown",function(e){
+    if(modalOpen()) return;
+    var tg=(e.target&&e.target.tagName)||"";
+    if(tg==="TEXTAREA"||tg==="INPUT"||tg==="VIDEO") return;
+    if(e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); goTo(cur+1); }
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); goTo(cur-1); }
+    else if(e.key==="Home"){ goTo(1); }
+  });
+  var tx=0,ty=0,tOk=false;
+  document.addEventListener("touchstart",function(e){
+    var tg=e.target.tagName; tOk=!(tg==="TEXTAREA"||tg==="INPUT"||modalOpen());
+    tx=e.touches[0].clientX; ty=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener("touchend",function(e){
+    if(!tOk) return;
+    var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*1.5){ goTo(dx<0?cur+1:cur-1); }
+  },{passive:true});
+
+  /* Umpan balik pertanyaan pemantik tentang fungsi dan manfaat amonia */
+  $("#jawab-awal").addEventListener("input",function(){ $("#cek-pemantik").disabled=len("#jawab-awal")<MIN_CHARS; $("#feedback-pemantik").style.display="none"; });
+  $("#cek-pemantik").addEventListener("click",function(){
+    var a=val("#jawab-awal").toLowerCase();
+    if(a.length<MIN_CHARS) return;
+    var good=/(pupuk|tanaman|pertanian|unsur nitrogen|nitrogen)/i.test(a);
+    var f=$("#feedback-pemantik");
+    f.style.display="block"; f.className="reason "+(good?"ok":"bad");
+    f.innerHTML=good
+      ? "<b class=\"fb-good\">Tepat!</b><p>Amonia (NH₃) berperan penting dalam bidang pertanian karena mengandung nitrogen, salah satu unsur hara utama yang dibutuhkan tanaman untuk tumbuh. Nitrogen digunakan tanaman untuk membentuk klorofil yang membantu proses fotosintesis, serta menyusun asam amino, protein, dan materi genetik. Karena itu, amonia dapat dimanfaatkan sebagai bahan baku pembuatan pupuk nitrogen, misalnya urea dan amonium nitrat. Pupuk tersebut membantu memenuhi kebutuhan nitrogen tanaman, mendukung pertumbuhan daun dan batang, serta meningkatkan pembentukan biomassa. Amonia juga dapat digunakan langsung sebagai pupuk dalam bentuk dan prosedur pertanian tertentu, tetapi harus ditangani secara tepat karena bersifat iritan dan dapat membahayakan jika terhirup atau terkena jaringan tubuh. Jadi, fungsi utama amonia dalam pertanian berkaitan dengan penyediaan nitrogen bagi tanaman.</p>"
+      : "<b class=\"fb-warn\">Kurang tepat.</b><p>Jawaban yang lebih tepat: amonia (NH₃) berfungsi sebagai sumber nitrogen dan bahan baku pembuatan pupuk nitrogen. Nitrogen merupakan unsur hara makro yang dibutuhkan tanaman untuk membentuk klorofil, asam amino, protein, dan materi genetik. Klorofil membantu tanaman melakukan fotosintesis, sedangkan protein berperan dalam pertumbuhan dan pembentukan jaringan. Oleh karena itu, pupuk yang dibuat dari amonia membantu memenuhi kebutuhan nitrogen sehingga pertumbuhan tanaman dapat berlangsung dengan baik. Contohnya, amonia menjadi bahan baku pembuatan urea dan amonium nitrat. Ingat, amonia bukan sekadar zat yang menyuburkan tanah; perannya terutama sebagai sumber unsur nitrogen yang dibutuhkan tanaman.</p>";
+    // Satu kali pengiriman jawaban sudah cukup untuk membuka tahap berikutnya.
+    // Siswa tetap bebas mengedit dan memeriksa ulang kapan saja.
+    S.promptChecked=true; evalGate(3);
+    scheduleSync();
+  });
+
+  /* kolom tulis: penghitung karakter + pembuka tahap */
+  [["#jawab-awal","#awal-count",3],["#tang-4","#tang4-count",5],["#tang-6","#tang6-count",6],["#refleksi","#refl-count",9]].forEach(function(a){
+    var el=$(a[0]), hint=$(a[1]);
+    el.addEventListener("input",function(){
+      var n=len(a[0]);
+      if(n>=MIN_CHARS){ hint.textContent="✓ Tanggapanmu sudah cukup."; hint.classList.add("ok"); }
+      else { hint.textContent="Tulis minimal "+MIN_CHARS+" karakter ("+n+"/"+MIN_CHARS+")"+(a[2]===3?" untuk membuka slide berikutnya.":"."); hint.classList.remove("ok"); }
+      if(a[2]!==8){ evalGate(a[2]); }
+    });
+    el.addEventListener("blur",function(){ scheduleSync(); });
+  });
+
+  /* Pemeriksaan konfigurasi elektron dan elektron valensi N serta H */
+  function normalizeConfig(v){ return String(v||"").trim().replace(/[,;]+/g," ").replace(/\s+/g," "); }
+  ["#cfg-n","#val-n","#cfg-h","#val-h"].forEach(function(sel){
+    $(sel).addEventListener("input",function(){
+      $("#config-feedback").style.display="none";
+    });
+  });
+  $("#check-config").addEventListener("click",function(){
+    var answers={n:normalizeConfig(val("#cfg-n")),vn:normalizeConfig(val("#val-n")),h:normalizeConfig(val("#cfg-h")),vh:normalizeConfig(val("#val-h"))};
+    if(!answers.n||!answers.vn||!answers.h||!answers.vh){
+      var f=$("#config-feedback"); f.style.display="block"; f.className="reason bad";
+      f.innerHTML="<b class=\"fb-warn\">Belum lengkap.</b><p>Isi konfigurasi elektron dan jumlah elektron valensi untuk nitrogen serta hidrogen terlebih dahulu.</p>";
+      return;
+    }
+    var good=answers.n==="2 5" && answers.vn==="5" && answers.h==="1" && answers.vh==="1";
+    var f=$("#config-feedback"); f.style.display="block"; f.className="reason "+(good?"ok":"bad");
+    if(good){
+      f.innerHTML="<b class=\"fb-good\">Tepat!</b><p>Konfigurasi elektron nitrogen adalah 2 5 sehingga elektron valensinya 5. Hidrogen memiliki konfigurasi elektron 1 dengan 1 elektron valensi.</p>";
+      S.configChecked=true; evalGate(4);
+    } else {
+      f.innerHTML="<b class=\"fb-warn\">Kurang tepat.</b><p>Periksa kembali jumlah elektron berdasarkan nomor atom. Nitrogen memiliki 7 elektron dan hidrogen memiliki 1 elektron. Susun elektron dari kulit K terlebih dahulu, lalu tentukan jumlah elektron pada kulit terluar. Perbaiki jawabanmu dan tekan Periksa Jawaban lagi.</p>";
+      S.configChecked=false; delete done[4]; refresh(); pill("Jawaban belum tepat. Perbaiki dahulu sebelum membuka tahap berikutnya.",false,3500,true);
+    }
+    scheduleSync();
+  });
+
+  /* =====================================================
+     SUARA (Web Speech API)
+     ===================================================== */
+  var synth=window.speechSynthesis||null, idVoice=null;
+  function pickVoice(){
+    if(!synth) return;
+    var vs=synth.getVoices();
+    idVoice=vs.filter(function(v){return /^id/i.test(v.lang)})[0]||vs.filter(function(v){return /indones/i.test(v.name)})[0]||null;
+  }
+  if(synth){ pickVoice(); synth.onvoiceschanged=pickVoice; }
+  function resetSpeakUI(){
+    $$("[data-speak].speaking,#sim-speak.speaking").forEach(function(b){b.classList.remove("speaking"); b.textContent=b.dataset.label;});
+    var eq=$("#eq"); if(eq) eq.classList.remove("on");
+  }
+  function stopSpeak(){ if(synth) synth.cancel(); resetSpeakUI(); }
+  function speak(text,btn,onend){
+    if(!synth){ if(btn){ alert("Browser kamu belum mendukung suara. Coba Chrome, Edge, atau Safari terbaru."); } return; }
+    synth.cancel(); resetSpeakUI();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang="id-ID"; if(idVoice) u.voice=idVoice; u.rate=0.95;
+    u.onend=u.onerror=function(){ if(btn){ resetSpeakUI(); } if(onend) onend(); };
+    if(btn){ btn.classList.add("speaking"); btn.textContent="⏹ Hentikan"; }
+    if(btn && btn.dataset.speak==="audio"){ $("#eq").classList.add("on"); }
+    synth.speak(u);
+  }
+  var TEXT={
+    konsep:"Ikatan kovalen terbentuk ketika dua atom menggunakan bersama pasangan elektron. Contohnya amonia. Atom nitrogen memiliki lima elektron valensi, dan setiap atom hidrogen memiliki satu elektron. Tiga atom hidrogen memakai bersama elektronnya dengan tiga elektron tunggal nitrogen, sehingga terbentuk tiga ikatan kovalen dan tersisa satu pasangan elektron bebas.",
+    audio:"Selamat datang di Chem Bond. Atom nitrogen punya lima elektron valensi, sedangkan atom hidrogen punya satu. Pada amonia, tiga elektron tunggal nitrogen berpasangan dengan elektron dari tiga atom hidrogen, dan tersisa satu pasangan elektron bebas. Ketika ion hidrogen yang kekurangan elektron mendekat, pasangan bebas itu dipakai bersama. Terbentuklah ion amonium. Inilah ikatan kovalen koordinasi, karena kedua elektron ikatannya berasal dari satu atom. Sekarang, lanjutkan ke simulasi."
+  };
+  $$("[data-speak]").forEach(function(b){
+    b.addEventListener("click",function(){
+      if(b.classList.contains("speaking")){ stopSpeak(); return; }
+      speak(TEXT[b.dataset.speak],b);
+    });
+  });
+  window.addEventListener("beforeunload",function(){ if(synth) synth.cancel(); });
+
+  /* =====================================================
+     PETUNJUK PENGGUNAAN BERTAHAP
+     ===================================================== */
+  var CM_STEPS=[
+    {t:"Baca materi",p:"Baca materi pada setiap bagian dengan teliti agar memahami konsep yang dijelaskan."},
+    {t:"Amati visualisasi dan simulasi",p:"Ikuti visualisasi, lalu jalankan setiap simulasi sesuai petunjuk yang tersedia pada layar."},
+    {t:"Isi tanggapan",p:"Tuliskan tanggapan atau jawaban pada kolom yang disediakan menggunakan kalimat sendiri."},
+    {t:"Kerjakan kuis dan refleksi",p:"Kerjakan soal esai pada kuis akhir, kemudian isi refleksi setelah selesai belajar."},
+    {t:"Gunakan navigasi",p:"Gunakan tombol Sebelumnya dan Berikutnya untuk berpindah bagian. Slide berikutnya akan terbuka setelah bagian sebelumnya diselesaikan."}
+  ];
+  var cmIndex=0;
+  function renderCara(){
+    var d=CM_STEPS[cmIndex], allRead=cmRead.every(Boolean);
+    $("#cm-count").textContent="Petunjuk "+(cmIndex+1)+" dari "+CM_STEPS.length;
+    $("#cm-num").textContent=cmIndex+1;
+    $("#cm-title").textContent=d.t;
+    $("#cm-text").textContent=d.p;
+    $("#cm-prev").disabled=cmIndex===0;
+    $("#cm-next").textContent=cmIndex===CM_STEPS.length-1?"Selesai membaca ✓":"Selanjutnya →";
+    $$("#cm-dots i").forEach(function(x,i){x.classList.toggle("on",i<=cmIndex);});
+    $("#cm-hint").textContent=allRead?"✓ Semua petunjuk sudah dibaca. Lengkapi identitas siswa untuk melanjutkan.":"Baca seluruh petunjuk untuk membuka bagian identitas siswa.";
+    $("#student-id-card").style.opacity=allRead?"1":".45";
+    $("#student-id-card").style.pointerEvents=allRead?"auto":"none";
+    evalGate(2); updateIdHint();
+  }
+  $("#cm-prev").addEventListener("click",function(){if(cmIndex>0){cmIndex--;renderCara();}});
+  $("#cm-next").addEventListener("click",function(){
+    cmRead[cmIndex]=true;
+    if(cmIndex<CM_STEPS.length-1){cmIndex++;}
+    renderCara();
+  });
+  renderCara();
+
+  /* =====================================================
+     IDENTITAS SISWA
+     ===================================================== */
+  function updateIdHint(){
+    var m=GATES[2](), h=$("#id-hint");
+    if(done[2]||!m.length){ h.textContent="Identitas siswa sudah terisi."; h.classList.add("ok"); }
+    else { h.textContent=cmRead.every(Boolean)?"Lengkapi nama dan kelas.":"Baca petunjuk penggunaan terlebih dahulu."; h.classList.remove("ok"); }
+  }
+  ["#in-nama","#in-kelas"].forEach(function(s){
+    $(s).addEventListener("input",function(){ evalGate(2); updateIdHint(); });
+    $(s).addEventListener("blur",function(){ scheduleSync(); });
+  });
+
+  /* =====================================================
+     SVG : bantu gambar
+     ===================================================== */
+  function defs(p){ return '<defs><filter id="gl'+p+'" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="ar'+p+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#78b7f2"/></marker></defs>'; }
+  function dot(x,y,c,r){return '<circle cx="'+x+'" cy="'+y+'" r="'+(r||4.4)+'" fill="'+(c||"#e8f1ff")+'"/>';}
+  function pairV(x,y,c){return dot(x,y-7,c)+dot(x,y+7,c);}
+  function pairH(x,y,c){return dot(x-7,y,c)+dot(x+7,y,c);}
+  function atomC(x,y,r,l,fill){return '<g><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'"/><text x="'+x+'" y="'+(y+5.5)+'" text-anchor="middle" font-family="Sora,sans-serif" font-weight="700" font-size="'+(r>20?20:15)+'" fill="#06142b">'+l+'</text></g>';}
+  function txt(x,y,t,c,a,sz){return '<text x="'+x+'" y="'+y+'" text-anchor="'+(a||"middle")+'" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="'+(sz||15)+'" fill="'+(c||"#cfe2ff")+'">'+t+'</text>';}
+  function plusBadge(x,y){ return '<g><circle cx="'+x+'" cy="'+y+'" r="9" fill="#78b7f2"/><text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-family="Sora,sans-serif" font-weight="800" font-size="15" fill="#2b2205">+</text></g>'; }
+
+  /* =====================================================
+     SLIDE 4 : SIMULASI IKATAN KOVALEN NH3 (4 tahap)
+     ===================================================== */
+  var COV=[
+    {t:"Atom-atom terpisah",c:"Atom N punya 5 elektron valensi: 3 elektron tunggal dan 1 pasangan bebas. Setiap atom H punya 1 elektron."},
+    {t:"Atom H mendekati atom N",c:"Tiga atom H bergerak mendekati atom N."},
+    {t:"Elektron dipakai bersama",c:"Setiap H memakai bersama 1 elektronnya dengan 1 elektron tunggal N. Terbentuk 3 pasangan elektron ikatan."},
+    {t:"NH₃ terbentuk",c:"NH₃ terbentuk: 3 ikatan kovalen N—H dan 1 pasangan elektron bebas pada N. Elektron di tiap pasangan ikatan berasal dari dua atom."}
+  ];
+  var cv=1;
+  function drawCov(n){
+    var s=defs("c"), CY="#367fc2", HG="#25a982", GD="#d6a52c";
+    s+='<circle cx="300" cy="140" r="30" fill="#7cc0ff"/><text x="300" y="148" text-anchor="middle" font-family="Sora,sans-serif" font-weight="800" font-size="22" fill="#06142b">N</text>';
+    s+=pairH(300,100,GD);                                   /* pasangan bebas N */
+    if(n===1){
+      s+=dot(258,140,CY)+dot(342,140,CY)+dot(300,182,CY);
+      s+=atomC(70,140,18,"H","#d4f5e6")+dot(94,140,HG);
+      s+=atomC(530,140,18,"H","#d4f5e6")+dot(506,140,HG);
+      s+=atomC(300,300,18,"H","#d4f5e6")+dot(300,276,HG);
+      s+=txt(70,176,"1 elektron","#9fb9de","middle",13)+txt(530,176,"1 elektron","#9fb9de","middle",13)+txt(380,305,"1 elektron","#9fb9de","start",13);
+      s+=txt(300,66,"N: 5 elektron valensi","#bfe3ff","middle",15);
+    }
+    if(n===2){
+      s+=dot(258,140,CY)+dot(342,140,CY)+dot(300,182,CY);
+      s+='<g class="mvL">'+atomC(190,140,18,"H","#d4f5e6")+dot(214,140,HG)+'</g>';
+      s+='<g class="mvR">'+atomC(410,140,18,"H","#d4f5e6")+dot(386,140,HG)+'</g>';
+      s+='<g class="mvB">'+atomC(300,250,18,"H","#d4f5e6")+dot(300,226,HG)+'</g>';
+      s+=txt(300,324,"Atom H mendekati atom N","#9fb9de","middle",15);
+    }
+    if(n===3){
+      /* Tahap 3: tiga atom H sudah berbagi elektron dengan N; pasangan bebas tetap tampak sama. */
+      s+='<g stroke="#e8f1ff" stroke-width="3.2"><line x1="208" y1="140" x2="270" y2="140"/><line x1="330" y1="140" x2="392" y2="140"/><line x1="300" y1="170" x2="300" y2="232"/></g>';
+      s+=atomC(190,140,18,"H","#d4f5e6")+atomC(410,140,18,"H","#d4f5e6")+atomC(300,250,18,"H","#d4f5e6");
+      s+=pairV(239,140)+pairV(361,140)+pairH(300,205);
+      s+=txt(300,324,"Tiga pasangan elektron dipakai bersama dalam ikatan N—H","#9fb9de","middle",14);
+    }
+    if(n===4){
+      s+='<g stroke="#e8f1ff" stroke-width="3.6"><line x1="208" y1="140" x2="270" y2="140"/><line x1="330" y1="140" x2="392" y2="140"/><line x1="300" y1="170" x2="300" y2="232"/></g>';
+      s+=atomC(190,140,18,"H","#d4f5e6")+atomC(410,140,18,"H","#d4f5e6")+atomC(300,250,18,"H","#d4f5e6");
+      s+=txt(190,176,"duet (2 e⁻)","#bfe3ff","middle",13)+txt(410,176,"duet (2 e⁻)","#bfe3ff","middle",13)+txt(328,254,"duet (2 e⁻)","#bfe3ff","start",13);
+      s+=txt(345,92,"oktet N (8 e⁻)","#bfe3ff","start",14);
+      s+=txt(300,324,"3 ikatan kovalen N—H + 1 pasangan elektron bebas","#78b7f2","middle",15);
+      s+=txt(520,70,"NH₃","#e8f1ff","middle",26).replace('font-size="26"','font-size="26" font-family="Sora,sans-serif"');
+    }
+    return s;
+  }
+  function renderCov(){
+    $("#cov-svg").innerHTML=drawCov(cv);
+    $("#cov-cap").textContent=COV[cv-1].c;
+    $("#cov-title").textContent=COV[cv-1].t;
+    $("#cov-pill").textContent="Tahap "+cv+"/4";
+    $$("#cov-dots i").forEach(function(e,i){ e.classList.toggle("on",i<cv); });
+    $("#cov-prev").disabled=(cv===1);
+    $("#cov-next").disabled=(cv===4);
+    if(cv===4){ S.sim4=true; evalGate(5); }
+  }
+  $("#cov-prev").addEventListener("click",function(){ if(cv>1){ cv--; renderCov(); speak(COV[cv-1].c); } });
+  $("#cov-next").addEventListener("click",function(){ if(cv<4){ cv++; renderCov(); speak(COV[cv-1].c); } });
+  $("#cov-reset").addEventListener("click",function(){ cv=1; renderCov(); speak("Simulasi dimulai ulang. "+COV[0].c); });
+  renderCov();
+
+  /* =====================================================
+     SLIDE 6 : SIMULASI NH3 + H+ -> NH4+
+     ===================================================== */
+  var STAGES=[
+    {t:"NH₃ terbentuk",s:"NH₃",c:"Pada NH₃, tiga elektron valensi nitrogen digunakan bersama dengan tiga atom hidrogen untuk membentuk tiga ikatan kovalen N—H. Amati susunan elektron di sekitar atom N.",say:"Pada amonia, tiga elektron valensi nitrogen digunakan bersama dengan tiga atom hidrogen untuk membentuk tiga ikatan kovalen N H. Amati susunan elektron di sekitar nitrogen."},
+    {t:"Hadirnya H⁺",s:"H⁺",c:"H⁺ tidak memiliki elektron. Kulit K-nya kosong dan siap menerima pasangan elektron.",say:"Ion hidrogen tidak memiliki elektron. Kulit K miliknya kosong, sehingga dapat menerima pasangan elektron."},
+    {t:"Pilih pasangan elektron",s:"Pilih lalu donasikan",c:"",say:"Menurutmu, pasangan elektron mana di sekitar atom nitrogen yang merupakan pasangan elektron bebas? Pilih satu pasangan pada ilustrasi."},
+    {t:"Terbentuk NH₄⁺",s:"NH₄⁺",c:"Pasangan elektron kini dipakai bersama oleh N dan H. Terbentuk ikatan kovalen koordinasi dan ion amonium NH₄⁺.",say:"Pasangan elektron kini dipakai bersama oleh nitrogen dan hidrogen. Terbentuklah ion amonium. Keempat ikatan N H dapat dipandang ekuivalen."}
+  ];  var st=1;
+  function drawStage(n){
+    var s=defs("s");
+    if(n<=2){
+      var cx=300,cy=170,i,a,x,y;
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="58" fill="none" stroke="#4a6fa5" stroke-dasharray="3 6"/>';
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="108" fill="none" stroke="#4a6fa5" stroke-dasharray="3 6"/>';
+      s+='<circle cx="'+cx+'" cy="'+cy+'" r="26" fill="#1f5fb8"/><text x="'+cx+'" y="'+(cy+7)+'" text-anchor="middle" font-family="Sora,sans-serif" font-weight="800" font-size="22" fill="#fff">N</text>';
+      [135,-45].forEach(function(d){a=d*Math.PI/180; s+='<circle cx="'+(cx+58*Math.cos(a)).toFixed(1)+'" cy="'+(cy+58*Math.sin(a)).toFixed(1)+'" r="6" fill="'+(n===2?"#6a86ad":"#3cc7e6")+'" opacity="'+(n===2?".5":"1")+'"/>';});
+      for(i=0;i<5;i++){a=(-90+72*i)*Math.PI/180; x=(cx+108*Math.cos(a)).toFixed(1); y=(cy+108*Math.sin(a)).toFixed(1);
+        s+='<circle cx="'+x+'" cy="'+y+'" r="'+(n===2?7:6)+'" fill="'+(n===2?"#78b7f2":"#3cc7e6")+'"'+(n===2?' filter="url(#gls)"':'')+'/>';}
+      s+=txt(cx+66,cy+5,"K = 2","#9fb9de","start",14);
+      s+=txt(cx+116,cy+5,"L = 5","#9fb9de","start",14);
+      s+=txt(cx,328,n===1?"Total 7 elektron: K = 2, L = 5":"5 elektron valensi (L = 5)",n===1?"#cfe2ff":"#78b7f2","middle",16);
+      return s;
+    }
+    var NX=300,NY=200,HL=180,HR=420,HB=310;
+    if(n===6){
+      s+='<line x1="198" y1="200" x2="270" y2="200" stroke="#e8f1ff" stroke-width="3.4"/><line x1="330" y1="200" x2="402" y2="200" stroke="#e8f1ff" stroke-width="3.4"/><line x1="300" y1="230" x2="300" y2="292" stroke="#e8f1ff" stroke-width="3.4"/>';
+    } else if(n===5){
+      s+='<g id="nh4-pair-left" class="pair-choice">'+pairV(234,200)+'<circle class="pair-hit" cx="234" cy="200" r="18"/></g>';
+      s+='<g id="nh4-pair-right" class="pair-choice">'+pairV(366,200)+'<circle class="pair-hit" cx="366" cy="200" r="18"/></g>';
+      s+='<g id="nh4-pair-bottom" class="pair-choice">'+pairH(300,262)+'<circle class="pair-hit" cx="300" cy="262" r="18"/></g>';
+    } else {
+      s+=pairV(234,200)+pairV(366,200)+pairH(300,262)+pairH(300,144);
+    }
+    s+=atomC(NX,NY,30,"N","#7cc0ff")+atomC(HL,NY,18,"H","#d4f5e6")+atomC(HR,NY,18,"H","#d4f5e6")+atomC(300,HB,18,"H","#d4f5e6");
+    if(n===3){
+      // Tahap 1: keempat pasangan elektron terlihat seragam; siswa belum diberi tahu mana pasangan bebas.
+    }
+    if(n===4){
+      // Tahap 2: H+ hadir; keempat pasangan tetap terlihat seragam tanpa penanda.
+      s+='<g class="pulse"><circle cx="300" cy="52" r="20" fill="none" stroke="#ff7d8c" stroke-width="2.4" stroke-dasharray="5 4"/><text x="300" y="58" text-anchor="middle" font-family="Sora,sans-serif" font-weight="700" font-size="16" fill="#ff7d8c">H⁺</text></g>';
+      s+=txt(336,56,"kulit K kosong","#ff9ca8","start",15);
+    }
+    if(n===5){
+      s+='<circle class="drag-target" cx="300" cy="65" r="34"/><circle cx="300" cy="65" r="23" fill="#ff9ca8" stroke="#ff7d8c" stroke-width="2.4"/><text x="300" y="71" text-anchor="middle" font-family="Sora,sans-serif" font-weight="700" font-size="16" fill="#4b1720">H⁺</text>';
+      s+='<g id="nh4-pair-free" class="pair-choice">'+pairH(300,144)+'<circle class="pair-hit" cx="300" cy="144" r="18"/></g>';
+    }
+    if(n===6){
+      s+='<line x1="300" y1="118" x2="300" y2="170" stroke="#78b7f2" stroke-width="3.4"/>';
+      s+=atomC(300,100,18,"H","#d4f5e6")+plusBadge(320,84);
+      s+=txt(336,146,"ikatan kovalen koordinasi","#78b7f2","start",15);
+      s+=txt(500,210,"NH₄⁺","#e8f1ff","middle",22).replace('font-size="22"','font-size="22" font-family="Sora,sans-serif"');
+      s+=txt(500,232,"ion amonium","#9fb9de","middle",13);
+    }
+    return s;
+  }
+  function bindSvgDrag(svg,selector,startX,startY,targetX,targetY,threshold,onSuccess){
+    var el=svg.querySelector(selector); if(!el)return;
+    var start=null, active=false, dx=0, dy=0, pointerId=null;
+    function point(evt){var pt=svg.createSVGPoint();pt.x=evt.clientX;pt.y=evt.clientY;var matrix=svg.getScreenCTM();return matrix?pt.matrixTransform(matrix.inverse()):{x:evt.clientX,y:evt.clientY};}
+    function reset(){active=false;start=null;pointerId=null;dx=0;dy=0;el.setAttribute('transform','translate(0 0)');}
+    el.style.touchAction='none'; el.style.cursor='grab'; el.style.pointerEvents='all';
+    el.addEventListener('pointerdown',function(evt){evt.preventDefault();evt.stopPropagation();start=point(evt);active=true;pointerId=evt.pointerId;try{el.setPointerCapture(pointerId);}catch(e){try{svg.setPointerCapture(pointerId);}catch(e2){}}});
+    function move(evt){if(!active||evt.pointerId!==pointerId||!start)return;evt.preventDefault();var q=point(evt);dx=q.x-start.x;dy=q.y-start.y;el.setAttribute('transform','translate('+dx+' '+dy+')');}
+    function up(evt){if(!active||evt.pointerId!==pointerId||!start)return;evt.preventDefault();var box=el.getBBox();var cx=box.x+box.width/2+dx,cy=box.y+box.height/2+dy;var ok=Math.hypot(cx-targetX,cy-targetY)<=threshold;reset();if(ok){onSuccess();}else{var cap=document.getElementById('sim-cap');if(cap)cap.textContent='Belum tepat. Coba geser dua titik biru sampai berada di dalam lingkaran H⁺.';}}
+    svg.addEventListener('pointermove',move); svg.addEventListener('pointerup',up); svg.addEventListener('pointercancel',function(evt){if(active&&evt.pointerId===pointerId)reset();});
+  }
+  var nh4PairChosen=false;
+  function chooseNh4Pair(group){
+    if(group.id==="nh4-pair-free"){
+      nh4PairChosen=true;
+      group.classList.add("correct-choice");
+      $("#sim-interaction-hint").textContent="Pilihan tepat. Sekarang tekan dan tahan pasangan elektron yang kamu pilih, lalu seret ke lingkaran H⁺.";
+      bindSvgDrag($("#sim-svg"),"#nh4-pair-free",300,144,300,65,48,function(){st=4;renderSim();});
+    }else{
+      group.classList.remove("wrong-choice");
+      void group.getBoundingClientRect();
+      group.classList.add("wrong-choice");
+      group.addEventListener("animationend",function(){group.classList.remove("wrong-choice");},{once:true});
+    }
+  }
+  function renderSim(){
+    if(st===3) nh4PairChosen=false;
+    var d=STAGES[st-1];
+    $("#sim-svg").innerHTML=drawStage(st+2);
+    if(st===3){
+      ["nh4-pair-left","nh4-pair-right","nh4-pair-bottom","nh4-pair-free"].forEach(function(id){
+        var g=document.getElementById(id); if(g) g.addEventListener("click",function(evt){evt.preventDefault();if(!nh4PairChosen)chooseNh4Pair(g);});
+      });
+      $("#sim-interaction-hint").textContent="Menurutmu, pasangan elektron mana di sekitar atom N yang merupakan pasangan elektron bebas? Klik salah satu pasangan untuk memilihnya.";
+    } else if(st===4){
+      $("#sim-interaction-hint").textContent="Berhasil! Pasangan elektron dari N digunakan bersama dengan H⁺. Terbentuk NH₄⁺ dengan empat ikatan N—H yang setara.";
+    } else {
+      $("#sim-interaction-hint").textContent=st===1?"Amati susunan elektron di sekitar atom nitrogen dalam NH₃.":"Ion H⁺ hadir sebagai penerima pasangan elektron. Perhatikan susunan elektron sebelum memilih pasangan yang akan didonasikan.";
+    }
+    $("#sim-cap").textContent=d.c;
+    $("#sim-cap").style.display=d.c?"block":"none";
+    $("#stage-pill").textContent="Tahap "+st+"/4";
+    $$("#stage-dots i").forEach(function(e,i){e.classList.toggle("on",i<st);});
+    $("#flow-st").textContent="Tahap "+st+" dari 4";
+    $("#flow-title").textContent=d.t;
+    $$("#flow-list li").forEach(function(li,i){li.className=(i+1<st?"done":(i+1===st?"now":""));});
+    $("#sim-prev").disabled=(st===1);
+    $("#sim-next").disabled=(st===3 || st===4);
+    $("#sim-next").textContent=(st===3?"Pilih pasangan elektron pada ilustrasi →":"Berikutnya →");
+    $("#sim-next").title=(st===3?"Pilih pasangan elektron bebas pada ilustrasi":"Lanjut ke tahap berikutnya");
+    if(st===4){ S.sim6=true; evalGate(6); }
+  }
+  $("#flow-list").innerHTML=STAGES.map(function(s,i){return '<li><span>'+(i+1)+'. '+s.s+'</span></li>';}).join("");
+  $("#sim-prev").addEventListener("click",function(){ if(st>1){st--; stopSpeak(); renderSim();} });
+  $("#sim-next").addEventListener("click",function(){ if(st<3){st++; stopSpeak(); renderSim();} });
+  $("#sim-reset").addEventListener("click",function(){ st=1; stopSpeak(); renderSim(); });
+  $("#sim-speak").addEventListener("click",function(){
+    var b=this;
+    if(b.classList.contains("speaking")){ stopSpeak(); return; }
+    speak(STAGES[st-1].say,b);
+  });
+  renderSim();
+
+  $('#check-hydro-config').addEventListener('click',function(){
+    var hcfg=$('#cfg-hydro-h').value.toLowerCase().trim(); var hval=$('#val-hydro-h').value.trim(); var ocfg=$('#cfg-o').value.toLowerCase().trim(); var oval=$('#val-o').value.trim();
+    if(!hcfg||!hval||!ocfg||!oval){var incomplete=$('#hydro-config-feedback');incomplete.style.display='block';incomplete.className='reason bad';incomplete.innerHTML='<b class="fb-warn">Belum lengkap.</b><p>Isi keempat jawaban terlebih dahulu. Kamu tetap boleh memperbaikinya setelah diperiksa.</p>';return;}
+    function shellValues(raw){
+      var t=String(raw||'').toLowerCase().replace(/[₀-₉]/g,function(c){return String('₀₁₂₃₄₅₆₇₈₉'.indexOf(c));}).replace(/kulit/g,'').replace(/elektron/g,'').replace(/[klmn]\s*[:=]?\s*/g,' ').replace(/[;,|/]+/g,' ').replace(/\s+/g,' ').trim();
+      var nums=t.match(/\d+/g); return nums?nums.join(' '):'';
+    }
+    var hShell=shellValues(hcfg), oShell=shellValues(ocfg);
+    var good=(hShell==='1') && (/^1(?:\s*(?:elektron)?)?$/.test(hval.toLowerCase())) && (oShell==='2 6') && (/^6(?:\s*(?:elektron)?)?$/.test(oval.toLowerCase()));
+    var f=$('#hydro-config-feedback'); f.style.display='block';
+    f.className='reason '+(good?'ok':'bad');
+    f.innerHTML=good?'<b class="fb-good">Tepat!</b><p>Jawabanmu benar. Konfigurasi elektron H adalah K = 1 dengan 1 elektron valensi. Konfigurasi elektron O adalah K = 2, L = 6 dengan 6 elektron valensi.</p>':'<b class="fb-warn">Belum tepat.</b><p>Periksa kembali jumlah elektron pada kulit K dan L, lalu hitung elektron pada kulit terluar. Kamu boleh memperbaiki jawaban dan memeriksanya kembali.</p>';
+    window.hydroConfigChecked=true; evalGate(7); scheduleSync();
+  });
+
+  /* =====================================================
+     SIMULASI MANDIRI O -> H2O -> H3O+ (drag and drop)
+     ===================================================== */
+  var hydroStage=0;
+  function renderHydro(){
+    var svg='<defs><filter id="hydroGlow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+    svg+='<rect x="18" y="18" width="564" height="284" rx="20" fill="#101f3b" stroke="#2b456d" stroke-width="2"/>';
+    // Atom O berada di tengah; titik elektron ditempatkan pada posisi tetap agar tidak bertumpuk.
+    svg+='<circle cx="270" cy="155" r="43" fill="#2366bd" stroke="#8dc5ff" stroke-width="3" filter="url(#hydroGlow)"/><text x="270" y="165" text-anchor="middle" font-size="31" font-weight="800" fill="#fff">O</text>';
+    var dotO='<circle cx="320" cy="105" r="6"/><circle cx="336" cy="105" r="6"/><circle cx="320" cy="205" r="6"/><circle cx="336" cy="205" r="6"/>';
+    var dotStyle='<g fill="#f5c95d" stroke="#fff0b8" stroke-width="1.1">';
+    if(hydroStage===0){
+      svg+=dotStyle+dotO+'<circle cx="220" cy="125" r="6"/><circle cx="220" cy="185" r="6"/></g>';
+    }
+    if(hydroStage>=1){
+      // Ikatan pertama: satu elektron O + satu elektron H ditampilkan pada garis ikatan.
+      svg+='<line x1="235" y1="132" x2="183" y2="98" stroke="#d8e8ff" stroke-width="5" stroke-linecap="round"/>';
+      svg+='<g fill="#f5c95d" stroke="#fff0b8" stroke-width="1"><circle cx="218" cy="120" r="5.5"/></g><g fill="#e0f7ee" stroke="#8bd5b5" stroke-width="1"><circle cx="207" cy="113" r="5.5"/></g>';
+      svg+='<circle cx="160" cy="82" r="23" fill="#e0f7ee" stroke="#8bd5b5" stroke-width="2"/><text x="160" y="89" text-anchor="middle" font-size="19" font-weight="800" fill="#174c39">H</text>';
+    }
+    if(hydroStage===1){
+      svg+=dotStyle+'<circle cx="320" cy="105" r="6"/><circle cx="336" cy="105" r="6"/><circle cx="320" cy="205" r="6"/><circle cx="336" cy="205" r="6"/><circle cx="220" cy="185" r="6"/></g>';
+    }
+    if(hydroStage>=2){
+      // Ikatan kedua terbentuk; empat titik di sisi kanan adalah dua pasangan bebas O.
+      svg+='<line x1="235" y1="178" x2="183" y2="212" stroke="#d8e8ff" stroke-width="5" stroke-linecap="round"/>';
+      svg+='<g fill="#f5c95d" stroke="#fff0b8" stroke-width="1"><circle cx="218" cy="190" r="5.5"/></g><g fill="#e0f7ee" stroke="#8bd5b5" stroke-width="1"><circle cx="207" cy="197" r="5.5"/></g>';
+      svg+='<circle cx="160" cy="228" r="23" fill="#e0f7ee" stroke="#8bd5b5" stroke-width="2"/><text x="160" y="235" text-anchor="middle" font-size="19" font-weight="800" fill="#174c39">H</text>';
+      svg+='<rect x="224" y="260" width="92" height="25" rx="12" fill="#e5f1ff"/><text x="270" y="277" text-anchor="middle" font-size="14" font-weight="800" fill="#17416f">H₂O</text>';
+    }
+    if(hydroStage===2){
+      svg+=dotStyle+'<circle cx="320" cy="105" r="6.5"/><circle cx="336" cy="105" r="6.5"/><circle cx="320" cy="205" r="6.5"/><circle cx="336" cy="205" r="6.5"/></g>';
+      svg+='<circle cx="470" cy="155" r="25" fill="#ffdce1" stroke="#ff9ca8" stroke-width="2"/><text x="470" y="162" text-anchor="middle" font-size="18" font-weight="800" fill="#6b2330">H⁺</text>';
+      svg+='<g id="hydro-drag-pair" class="drag-token" style="cursor:grab;touch-action:none"><circle cx="328" cy="205" r="25" fill="transparent" stroke="transparent" pointer-events="all"/><circle cx="320" cy="205" r="6.5" fill="#f5c95d" stroke="#fff0b8" stroke-width="1.2"/><circle cx="336" cy="205" r="6.5" fill="#f5c95d" stroke="#fff0b8" stroke-width="1.2"/></g>';
+      svg+='';
+    } else if(hydroStage===3){
+      // Satu pasangan bebas tetap pada O; pasangan yang didonasikan berada di antara O dan H.
+      svg+=dotStyle+'<circle cx="320" cy="105" r="6.5"/><circle cx="336" cy="105" r="6.5"/></g>';
+      svg+='<line x1="313" y1="155" x2="408" y2="155" stroke="#d8e8ff" stroke-width="5" stroke-linecap="round"/>';
+      svg+='<g fill="#f5c95d" stroke="#fff0b8" stroke-width="1.1"><circle cx="340" cy="145" r="6"/><circle cx="340" cy="165" r="6"/></g>';
+      svg+='<circle cx="435" cy="155" r="23" fill="#ffdce1" stroke="#ff9ca8" stroke-width="2"/><text x="435" y="162" text-anchor="middle" font-size="18" font-weight="800" fill="#6b2330">H</text>';
+      svg+='<rect x="470" y="116" width="92" height="76" rx="13" fill="#e7f2ff"/><text x="516" y="148" text-anchor="middle" font-size="22" font-weight="800" fill="#17416f">H₃O⁺</text><text x="516" y="169" text-anchor="middle" font-size="11" fill="#315b8a">hidronium</text>';
+    }
+    if(hydroStage===0){
+      svg+='<circle class="drag-target" cx="160" cy="82" r="32"/><g id="hydro-drag-h1" class="drag-token"><circle cx="500" cy="82" r="23" fill="#e0f7ee" stroke="#8bd5b5" stroke-width="2"/><text x="500" y="89" text-anchor="middle" font-size="19" font-weight="800" fill="#174c39">H</text></g>';
+    }
+    if(hydroStage===1){
+      svg+='<circle class="drag-target" cx="160" cy="228" r="32"/><g id="hydro-drag-h2" class="drag-token"><circle cx="500" cy="228" r="23" fill="#e0f7ee" stroke="#8bd5b5" stroke-width="2"/><text x="500" y="235" text-anchor="middle" font-size="19" font-weight="800" fill="#174c39">H</text></g>';
+    }
+    $('#hydro-svg').innerHTML=svg;
+    var states=['Tahap 1 • Atom O','Tahap 2 • Ikatan O–H pertama','Tahap 3 • Molekul H₂O','Tahap 4 • Ikatan kovalen koordinasi terbentuk'];
+    var caps=['Seret atom H pertama ke lingkaran sasaran di sebelah kiri atas O.','Seret atom H kedua ke lingkaran sasaran di sebelah kiri bawah O.','H₂O sudah terbentuk. Seret salah satu pasangan elektron bebas pada O menuju H⁺.','H₃O⁺ terbentuk. Pasangan elektron dari O kini menjadi pasangan ikatan O–H.'];
+    var explains=[
+      '<b>Langkah 1 — Amati atom O.</b> Enam elektron valensi O ditampilkan sebagai dua pasangan dan dua elektron yang akan digunakan untuk berikatan.',
+      '<b>Langkah 2 — Ikatan pertama.</b> Satu elektron O dan satu elektron H digunakan bersama. Empat elektron O lainnya tetap sebagai dua pasangan bebas, dan satu elektron O menunggu ikatan berikutnya.',
+      '<b>Langkah 3 — H₂O bertemu H⁺.</b> Setelah dua ikatan O–H terbentuk, O memiliki dua pasangan elektron bebas. Seret satu pasangan ke H⁺ untuk membentuk ikatan kovalen koordinasi.',
+      '<b>Langkah 4 — H₃O⁺ terbentuk.</b> Pasangan elektron yang berasal dari O menjadi pasangan ikatan O–H. Satu pasangan elektron bebas lainnya tetap pada O.'
+    ];
+    $('#hydro-state').textContent=states[hydroStage]; $('#hydro-cap').textContent=caps[hydroStage]; $('#hydro-explain').innerHTML=explains[hydroStage];
+    if(hydroStage===0) bindSvgDrag($('#hydro-svg'),'#hydro-drag-h1',500,82,160,82,54,function(){hydroStage=1;renderHydro();});
+    if(hydroStage===1) bindSvgDrag($('#hydro-svg'),'#hydro-drag-h2',500,228,160,228,54,function(){hydroStage=2;renderHydro();});
+    if(hydroStage===2) bindSvgDrag($('#hydro-svg'),'#hydro-drag-pair',328,205,470,155,90,function(){hydroStage=3;renderHydro();});
+    S.hydroSim=hydroStage===3; if(S.hydroSim){evalGate(7);scheduleSync();}
+  }
+  renderHydro();
+
+  $('#tang-hydro').addEventListener('input',function(){var n=this.value.trim().length;$('#tang-hydro-count').textContent=n>=10?'✓ Tanggapan sudah cukup.':'Tulis minimal 10 karakter ('+n+'/10).';$('#hydro-answer-feedback').style.display='none';scheduleSync();});
+  ['#tang-4','#tang-6'].forEach(function(sel){$(sel).addEventListener('input',function(){ $(sel==='#tang-4'?'#feedback-tang4':'#feedback-tang6').style.display='none';scheduleSync();});});
+  ['#cfg-hydro-h','#val-hydro-h','#cfg-o','#val-o'].forEach(function(sel){$(sel).addEventListener('input',function(){$('#hydro-config-feedback').style.display='none';scheduleSync();});});
+  ['#donor-choice','#acceptor-choice'].forEach(function(sel){$(sel).addEventListener('change',function(){$('#donor-feedback').style.display='none';scheduleSync();});});
+  $('#check-hydro-answer').addEventListener('click',function(){var v=$('#tang-hydro').value.trim().toLowerCase();if(v.length<10){pill("Tulis tanggapan minimal 10 karakter terlebih dahulu.",false,2500,true);return;}var good=/oksigen|o\b/.test(v)&&/pasangan elektron|elektron bebas|donor/.test(v)&&/h\+|hidrogen|akseptor/.test(v);var f=$('#hydro-answer-feedback');f.style.display='block';f.className='reason '+(good?'ok':'bad');f.innerHTML=good?'<b class="fb-good">Tepat!</b><p>Atom O pada H₂O bertindak sebagai donor karena menyediakan satu pasangan elektron bebas. Ion H⁺ bertindak sebagai akseptor karena menerima pasangan elektron tersebut. Pemakaian bersama pasangan elektron dari O dan H⁺ membentuk ikatan kovalen koordinasi sehingga terbentuk ion H₃O⁺.</p>':'<b class="fb-warn">Kurang tepat.</b><p>Ingat kembali: atom O pada H₂O menyumbangkan satu pasangan elektron bebas kepada ion H⁺. O adalah donor dan H⁺ adalah akseptor. Perbaiki jawabanmu, lalu tekan Periksa Tanggapan lagi.</p>';window.hydroAnswerChecked=true;evalGate(7);scheduleSync();});
+
+  window.tang4Checked=false; window.tang6Checked=false; window.donorChecked=false; window.hydroConfigChecked=false; window.hydroAnswerChecked=false;
+  $('#check-tang4').addEventListener('click',function(){var v=$('#tang-4').value.trim().toLowerCase();if(v.length<10){pill("Tulis tanggapan minimal 10 karakter terlebih dahulu.",false,2500,true);return;}var good=/elektron/.test(v)&&(/bersama|dipakai bersama|berbagi/.test(v))&&(/nitrogen|n\b/.test(v))&&(/hidrogen|h\b/.test(v));var f=$('#feedback-tang4');f.style.display='block';f.innerHTML=good?'<b class="fb-good">Tepat!</b><p>Ikatan kovalen pada NH₃ terbentuk karena atom nitrogen menggunakan bersama tiga pasangan elektron dengan tiga atom hidrogen. Setiap pasangan ikatan terdiri atas satu elektron dari N dan satu elektron dari H. Dua elektron N lainnya tetap menjadi satu pasangan elektron bebas.</p>':'<b class="fb-warn">Kurang tepat.</b><p>Jawaban yang benar: atom N menggunakan bersama tiga pasangan elektron dengan tiga atom H. Setiap ikatan N—H terbentuk dari pemakaian bersama sepasang elektron, satu berasal dari N dan satu dari H. Satu pasangan elektron pada N tidak digunakan untuk berikatan dan disebut pasangan elektron bebas.</p>';window.tang4Checked=true;evalGate(5);scheduleSync();});
+  $('#check-tang6').addEventListener('click',function(){var v=$('#tang-6').value.trim().toLowerCase();if(v.length<10){pill("Tulis tanggapan minimal 10 karakter terlebih dahulu.",false,2500,true);return;}var n=v.replace(/[₀-₉]/g,function(c){return String('₀₁₂₃₄₅₆₇₈₉'.indexOf(c));}).replace(/[⁺]/g,'+');var donor=/nh3|amonia|nitrogen|\bn\b/.test(n);var acceptor=/h\+|ion hidrogen|hidrogen|\bh\b/.test(n);var electron=/pasangan elektron|elektron bebas|menyumbang|menyumbangkan|mendonorkan|mendonasikan|memberikan|menyerahkan|donor/.test(n);var product=/nh4|amonium|ammonium/.test(n);var score=[donor,acceptor,electron,product].filter(Boolean).length;var good=score>=2;var f=$('#feedback-tang6');f.style.display='block';f.innerHTML=good?'<b class="fb-good">Tepat!</b><p>Jawabanmu sudah mengarah pada konsep yang benar. Atom N pada NH₃ menyumbangkan pasangan elektron bebas kepada H⁺. N bertindak sebagai donor, sedangkan H⁺ sebagai akseptor. Ikatan kovalen koordinasi terbentuk dan menghasilkan NH₄⁺.</p>':'<b class="fb-warn">Belum tepat sepenuhnya.</b><p>Lengkapi penjelasan bahwa pasangan elektron bebas dari atom N pada NH₃ diberikan kepada H⁺ sehingga terbentuk NH₄⁺. N berperan sebagai donor, sedangkan H⁺ sebagai akseptor. Kamu boleh memperbaiki jawaban dan memeriksanya lagi.</p>';window.tang6Checked=true;evalGate(6);scheduleSync();});
+  $('#check-donor').addEventListener('click',function(){if(!$('#donor-choice').value||!$('#acceptor-choice').value){pill("Pilih donor dan akseptor terlebih dahulu.",false,2500,true);return;}var good=$('#donor-choice').value==='N'&&$('#acceptor-choice').value==='H';var f=$('#donor-feedback');f.style.display='block';f.innerHTML=good?'<b class="fb-good">Tepat!</b><p><span style="color:#17345f;font-weight:700">N pada NH₃ adalah donor karena menyediakan pasangan elektron bebas. H⁺ adalah akseptor karena menerima pasangan elektron tersebut.</span>.</p>':'<b class="fb-warn">Kurang tepat.</b><p>Jawaban yang benar: donor = atom N pada NH₃; akseptor = ion H⁺. Pasangan elektron berasal dari N dan diterima oleh H⁺.</p>';window.donorChecked=true;evalGate(6);scheduleSync();});
+
+  /* =====================================================
+     KUIS AKHIR (slide 8)
+     ===================================================== */
+  var KUIS=[
+    {q:"Apa yang dimaksud dengan ikatan kovalen koordinasi? Jelaskan dengan bahasamu sendiri."},
+    {q:"Apa perbedaan ikatan kovalen biasa dengan ikatan kovalen koordinasi?"},
+    {q:"Berapa jumlah elektron valensi yang dimiliki atom nitrogen (N)?"},
+    {q:"Mengapa atom nitrogen dalam NH₃ masih memiliki pasangan elektron bebas?"},
+    {q:"Bagaimana tiga atom hidrogen dapat berikatan dengan satu atom nitrogen membentuk NH₃?"},
+    {q:"Apa yang dimaksud dengan donor pasangan elektron dalam ikatan kovalen koordinasi?"},
+    {q:"Mengapa ion H⁺ dapat menerima pasangan elektron dari atom nitrogen pada NH₃?"},
+    {q:"Dalam pembentukan NH₄⁺ dari NH₃ dan H⁺, atom manakah yang bertindak sebagai donor dan akseptor?"},
+    {q:"Bagaimana molekul H₂O dapat membentuk ion H₃O⁺ ketika bertemu dengan H⁺?"},
+    {q:"Dari atom manakah pasangan elektron yang membentuk ikatan kovalen koordinasi pada H₃O⁺ berasal? Jelaskan."}
+  ];  var ki=0, kuisDone=false, kuisLog=[], attempt=0;
+  function renderKuis(){
+    var q=KUIS[ki]; kuisDone=false;
+    $("#kuis-ind").textContent="Soal "+(ki+1)+" dari "+KUIS.length;
+    var saved=kuisLog[ki]||"";
+    var html='<div class="q-text" style="font-size:1.05rem;margin-bottom:14px">'+(ki+1)+'. '+q.q+'</div>'+
+      '<textarea id="essay-answer" rows="5" placeholder="Tulis jawabanmu dengan kalimat sendiri…">'+esc(saved)+'</textarea>'+
+      '<p class="hint" id="essay-count">Tulis minimal 10 karakter ('+saved.length+'/10).</p>';
+    $("#kuis-area").innerHTML=html;
+    var answer=$("#essay-answer"), nb=$("#kuis-next");
+    nb.disabled=false;
+    nb.textContent=(ki===KUIS.length-1)?"Selesai Kuis →":"Soal Berikutnya →";
+    $("#essay-count").textContent="Jawab sesuai pemahamanmu. Kamu tetap bisa lanjut meskipun jawabanmu belum tepat.";
+    answer.addEventListener("input",function(){
+      kuisLog[ki]=answer.value.trim(); scheduleSync();
+    });
+    answer.addEventListener("blur",function(){ kuisLog[ki]=answer.value.trim(); scheduleSync(); });
+  }
+  function startKuis(){ ki=0; kuisLog=[]; attempt++; renderKuis(); }
+  function showResult(){
+    kuisLog[ki]=$("#essay-answer").value.trim();
+    $("#kuis-ind").textContent="Kuis selesai";
+    $("#kuis-area").innerHTML='<div class="result"><div class="big">Selesai</div><p>Kamu telah menyelesaikan sepuluh soal esai. Jawabanmu tersimpan sebagai bagian dari hasil belajar.</p><div class="sync-line" id="sync-line-quiz"></div></div>';
+    var nb=$("#kuis-next"); nb.disabled=false; nb.textContent="↻ Ulangi Kuis";
+    kuisDone=true; S.quiz=true; submitNow(); evalGate(8);
+  }
+  $("#kuis-next").addEventListener("click",function(){
+    if(kuisDone){ startKuis(); $("#slide-8").scrollTop=0; return; }
+    kuisLog[ki]=$("#essay-answer").value.trim();
+    if(ki<KUIS.length-1){ ki++; renderKuis(); } else { showResult(); }
+    scheduleSync();
+  });
+  startKuis();
+
+  /* =====================================================
+     DATA HASIL: rekap, penyimpanan lokal, sinkronisasi, Excel
+     ===================================================== */
+  var HEAD=["ID","Waktu Mulai","Waktu Update","Nama","Kelas","Jawaban Pemantik Awal","Tanggapan Simulasi Kovalen NH3","Tanggapan Simulasi Koordinasi NH3+H+","Tanggapan Simulasi NH3+H+ Bertahap","Konfigurasi H","Elektron Valensi H","Konfigurasi O","Elektron Valensi O","Simulasi H2O+H+ Selesai","Tahap Simulasi H3O+","Percobaan Kuis","Jawaban Esai 1","Jawaban Esai 2","Jawaban Esai 3","Jawaban Esai 4","Jawaban Esai 5","Jawaban Esai 6","Jawaban Esai 7","Jawaban Esai 8","Jawaban Esai 9","Jawaban Esai 10","Refleksi Akhir","Progress (%)"];
+  var sesi=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  function nowStr(){ try{ return new Date().toLocaleString("id-ID",{hour12:false}); }catch(e){ return new Date().toISOString(); } }
+  var tMulai=nowStr();
+  var mem={};
+  function lsGet(k){ try{ var v=localStorage.getItem(k); return v===null?(mem[k]||null):v; }catch(e){ return mem[k]||null; } }
+  function lsSet(k,v){ mem[k]=v; try{ localStorage.setItem(k,v); }catch(e){} }
+
+  function collect(){
+    var o={};
+    o["ID"]=sesi; o["Waktu Mulai"]=tMulai; o["Waktu Update"]=nowStr();
+    o["Nama"]=val("#in-nama"); o["Kelas"]=val("#in-kelas");
+    o["Jawaban Pemantik Awal"]=val("#jawab-awal");
+    o["Tanggapan Simulasi Kovalen NH3"]=val("#tang-4");
+    o["Tanggapan Pembentukan H3O+"]=val("#tang-hydro");
+    o["Konfigurasi H"]=val("#cfg-hydro-h"); o["Elektron Valensi H"]=val("#val-hydro-h");
+    o["Konfigurasi O"]=val("#cfg-o"); o["Elektron Valensi O"]=val("#val-o");
+    o["Tanggapan Simulasi NH3-H+"]=val("#tang-6");
+    o["Simulasi H2O+H+ Selesai"]=S.hydroSim?"Ya":"Belum"; o["Tahap Simulasi H3O+"]=typeof hydroStage!=="undefined"?hydroStage:0;
+    if(attempt>0){ o["Percobaan Kuis"]=attempt; for(var qi=0;qi<10;qi++) o["Jawaban Esai "+(qi+1)]=kuisLog[qi]||""; }
+    o["Refleksi Akhir"]=val("#refleksi");
+    o["Progress (%)"]=progressPct();
+    return o;
+  }
+  function saveLocal(rec){
+    var arr=[]; try{ arr=JSON.parse(lsGet("chembond-hasil")||"[]"); }catch(e){ arr=[]; }
+    var idx=-1; arr.forEach(function(r,i){ if(r["ID"]===rec["ID"]) idx=i; });
+    if(idx<0) arr.push(rec); else arr[idx]=Object.assign({},arr[idx],rec);
+    lsSet("chembond-hasil",JSON.stringify(arr));
+  }
+  function localRows(){ var arr=[]; try{ arr=JSON.parse(lsGet("chembond-hasil")||"[]"); }catch(e){} return arr; }
+  function setSync(kind,msg){
+    $$(".sync-line").forEach(function(el){ el.className="sync-line "+kind; el.textContent=msg; });
+  }
+  function postJSON(obj){
+    return fetch(SYNC_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(obj)});
+  }
+  function outbox(){ var a=[]; try{ a=JSON.parse(lsGet("chembond-outbox")||"[]"); }catch(e){} return a; }
+  function queueOut(rec){ var a=outbox().filter(function(r){return r["ID"]!==rec["ID"];}); a.push(rec); lsSet("chembond-outbox",JSON.stringify(a)); }
+  function flushOutbox(){
+    if(!SYNC_URL || typeof fetch!=="function") return;
+    var q=outbox(); if(!q.length) return;
+    lsSet("chembond-outbox","[]");
+    q.forEach(function(r){ postJSON(r).catch(function(){ queueOut(r); }); });
+  }
+  var syncT=null;
+  function scheduleSync(){ clearTimeout(syncT); syncT=setTimeout(submitNow,1200); }
+  function submitNow(){
+    clearTimeout(syncT);
+    if(len("#in-nama")<1) return;                       /* belum ada identitas */
+    var rec=collect(); saveLocal(rec);
+    if(!SYNC_URL){
+      /* Simpan lokal tanpa menampilkan peringatan koneksi Excel online. */
+      return;
+    }
+    if(typeof fetch!=="function"){ queueOut(rec); setSync("warn","Browser ini tidak bisa mengirim data. Unduh hasilmu sebagai Excel."); return; }
+    setSync("busy","Mengirim jawabanmu…");
+    postJSON(rec).then(function(){
+      setSync("ok","✓ Jawabanmu terkirim dan tersinkronisasi ke rekap guru (Excel).");
+      flushOutbox();
+    }).catch(function(){
+      queueOut(rec);
+      setSync("warn","Gagal mengirim (mungkin tidak ada internet). Jawabanmu tersimpan dan akan dikirim ulang otomatis.");
+    });
+  }
+
+  /* ---------- pembuat file .xlsx (tanpa pustaka luar) ---------- */
+  function crc32(buf){
+    var t=crc32.t;
+    if(!t){ t=crc32.t=new Uint32Array(256); for(var n=0;n<256;n++){ var c=n; for(var k=0;k<8;k++){ c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1); } t[n]=c>>>0; } }
+    var crc=0xFFFFFFFF; for(var i=0;i<buf.length;i++){ crc=t[(crc^buf[i])&0xFF]^(crc>>>8); }
+    return (crc^0xFFFFFFFF)>>>0;
+  }
+  function utf8(s){ return new TextEncoder().encode(s); }
+  function zipStore(files){
+    var parts=[], central=[], offset=0;
+    files.forEach(function(f){
+      var name=utf8(f.name), data=utf8(f.text), crc=crc32(data), size=data.length;
+      var lh=new DataView(new ArrayBuffer(30));
+      lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0x0800,true); lh.setUint16(8,0,true);
+      lh.setUint16(10,0,true); lh.setUint16(12,0x21,true); lh.setUint32(14,crc,true); lh.setUint32(18,size,true); lh.setUint32(22,size,true);
+      lh.setUint16(26,name.length,true); lh.setUint16(28,0,true);
+      parts.push(new Uint8Array(lh.buffer),name,data);
+      var ch=new DataView(new ArrayBuffer(46));
+      ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true); ch.setUint16(8,0x0800,true); ch.setUint16(10,0,true);
+      ch.setUint16(12,0,true); ch.setUint16(14,0x21,true); ch.setUint32(16,crc,true); ch.setUint32(20,size,true); ch.setUint32(24,size,true);
+      ch.setUint16(28,name.length,true); ch.setUint32(42,offset,true);
+      central.push(new Uint8Array(ch.buffer),name);
+      offset+=30+name.length+size;
+    });
+    var csize=0; central.forEach(function(c){ csize+=c.length; });
+    var end=new DataView(new ArrayBuffer(22));
+    end.setUint32(0,0x06054b50,true); end.setUint16(8,files.length,true); end.setUint16(10,files.length,true); end.setUint32(12,csize,true); end.setUint32(16,offset,true);
+    return new Blob(parts.concat(central,[new Uint8Array(end.buffer)]),{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  }
+  function colName(i){ var s=""; i++; while(i>0){ var m=(i-1)%26; s=String.fromCharCode(65+m)+s; i=Math.floor((i-1)/26); } return s; }
+  function xmlEsc(s){ return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function makeXlsx(headers,rows,sheetName){
+    var X='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+    var cols=headers.map(function(h,i){
+      var w=(/Jawaban|Tanggapan|Refleksi/.test(h))?46:(/Nama/.test(h)?26:(/^Soal/.test(h)?24:(/Waktu/.test(h)?20:14)));
+      return '<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>';
+    }).join("");
+    var sd=X+'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>'+cols+'</cols><sheetData>';
+    sd+='<row r="1">'+headers.map(function(h,i){return '<c r="'+colName(i)+'1" s="1" t="inlineStr"><is><t>'+xmlEsc(h)+'</t></is></c>';}).join("")+'</row>';
+    rows.forEach(function(r,ri){
+      sd+='<row r="'+(ri+2)+'">';
+      headers.forEach(function(h,ci){
+        var v=r[ci]; if(v===undefined||v===null||v==="") return;
+        var ref=colName(ci)+(ri+2);
+        if(typeof v==="number" && isFinite(v)) sd+='<c r="'+ref+'"><v>'+v+'</v></c>';
+        else sd+='<c r="'+ref+'" s="2" t="inlineStr"><is><t xml:space="preserve">'+xmlEsc(v)+'</t></is></c>';
+      });
+      sd+='</row>';
+    });
+    sd+='</sheetData></worksheet>';
+    var files=[
+      {name:"[Content_Types].xml",text:X+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'},
+      {name:"_rels/.rels",text:X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+      {name:"xl/workbook.xml",text:X+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="'+xmlEsc(sheetName||"Hasil")+'" sheetId="1" r:id="rId1"/></sheets></workbook>'},
+      {name:"xl/_rels/workbook.xml.rels",text:X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'},
+      {name:"xl/styles.xml",text:X+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1D4A8A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'},
+      {name:"xl/worksheets/sheet1.xml",text:sd}
+    ];
+    return zipStore(files);
+  }
+  function downloadBlob(blob,name){
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+  }
+  function rowsFromRecords(recs){ return recs.map(function(r){ return HEAD.map(function(h){ return r[h]; }); }); }
+  function safeName(s){ return String(s||"siswa").replace(/[^\w\-]+/g,"_").slice(0,30); }
+
+  /* unduh hasil milik siswa sendiri */
+  $("#btn-xlsx").addEventListener("click",function(){
+    if(len("#in-nama")<1){ $("#save-msg").style.color="#a0562b"; $("#save-msg").textContent="Lengkapi identitas siswa pada bagian awal."; return; }
+    var rec=collect(); saveLocal(rec);
+    downloadBlob(makeXlsx(HEAD,rowsFromRecords([rec]),"Hasil"),"Hasil-CHEM-BOND-"+safeName(rec["Nama"])+".xlsx");
+  });
+
+  /* simpan refleksi (pengiriman akhir) */
+  $("#save-ref").addEventListener("click",function(){
+    var m=$("#save-msg");
+    if(len("#refleksi")<MIN_CHARS){ m.style.color="#a0562b"; m.textContent="Tulis refleksimu dulu (minimal "+MIN_CHARS+" karakter), lalu kirim."; return; }
+    m.style.color="#1d6b46"; m.textContent="✓ Refleksi tersimpan.";
+    S.refl=true;
+    submitNow();
+    evalGate(9);
+  });
+
+  /* ---------- Mode Guru: rekap + unduh Excel ---------- */
+  var curTable={headers:[],rows:[]};
+  function showTable(headers,rows){
+    curTable={headers:headers,rows:rows};
+    var h='<table><thead><tr>'+headers.map(function(x){return '<th>'+esc(x)+'</th>';}).join("")+'</tr></thead><tbody>'+
+      rows.map(function(r){ return '<tr>'+headers.map(function(x,i){ var v=r[i]; return '<td>'+(v===undefined||v===null?"":esc(v))+'</td>'; }).join("")+'</tr>'; }).join("")+'</tbody></table>';
+    $("#guru-table").innerHTML=rows.length?h:'<p style="padding:14px;color:var(--muted)">Belum ada data.</p>';
+    $("#guru-count").textContent=rows.length+" siswa";
+    $("#guru-xlsx").disabled=!rows.length; $("#guru-copy").disabled=!rows.length;
+  }
+  function loadLocal(){
+    showTable(HEAD,rowsFromRecords(localRows()));
+  }
+  function loadServer(){
+    var pin=$("#guru-pin").value;
+    var msg=$("#guru-msg"); msg.className="sa-msg"; msg.textContent="Memuat data…";
+    if(typeof fetch!=="function"){ msg.className="sa-msg bad"; msg.textContent="Browser tidak mendukung."; loadLocal(); return; }
+    var url=SYNC_URL+(SYNC_URL.indexOf("?")>-1?"&":"?")+"action=list&key="+encodeURIComponent(pin);
+    fetch(url).then(function(r){ return r.json(); }).then(function(d){
+      if(!d || !d.ok) throw new Error((d&&d.error)||"gagal");
+      showTable(d.headers,d.rows);
+      msg.className="sa-msg ok"; msg.textContent="✓ Data terbaru dimuat dari rekap online.";
+    }).catch(function(err){
+      msg.className="sa-msg bad"; msg.textContent="Tidak bisa memuat dari rekap online ("+err.message+"). Menampilkan data di perangkat ini.";
+      loadLocal();
+    });
+  }
+  function openGuru(){
+    $("#guru-modal").classList.add("open");
+    $("#guru-msg").textContent="";
+    if(SYNC_URL){
+      $("#guru-login").hidden=false;
+      $("#guru-mode").textContent="Data diambil dari rekap online (tersinkronisasi dengan Excel/Google Sheets). Masukkan PIN guru.";
+      showTable([],[]); $("#guru-pin").focus();
+    } else {
+      $("#guru-login").hidden=true;
+      $("#guru-msg").textContent="";
+      loadLocal();
+    }
+  }
+  function closeGuru(){ $("#guru-modal").classList.remove("open"); }
+  $("#open-guru").addEventListener("click",openGuru);
+  $("#guru-close").addEventListener("click",closeGuru);
+  $("#guru-modal").addEventListener("click",function(e){ if(e.target===this) closeGuru(); });
+  $("#guru-load").addEventListener("click",loadServer);
+  $("#guru-pin").addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); loadServer(); } });
+  $("#guru-xlsx").addEventListener("click",function(){
+    downloadBlob(makeXlsx(curTable.headers,curTable.rows,"Hasil"),"Rekap-CHEM-BOND.xlsx");
+  });
+  $("#guru-copy").addEventListener("click",function(){
+    var tsv=[curTable.headers.join("\t")].concat(curTable.rows.map(function(r){ return curTable.headers.map(function(h,i){ return String(r[i]===undefined||r[i]===null?"":r[i]).replace(/[\t\r\n]+/g," "); }).join("\t"); })).join("\n");
+    var done_=function(){ $("#guru-msg").className="sa-msg ok"; $("#guru-msg").textContent="✓ Data disalin. Tempel (Ctrl+V) di Microsoft Excel."; };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(tsv).then(done,function(){}); }
+    else { var ta=document.createElement("textarea"); ta.value=tsv; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); done(); }catch(e){} ta.remove(); }
+  });
+
+  /* MODEL ATOM INTERAKTIF: pilih unsur, lihat elektron bergerak pada kulit */
+  (function initAtomExplorer(){
+    var data={
+      1:{name:'Hidrogen',sym:'H',z:1,shells:[1]},
+      6:{name:'Karbon',sym:'C',z:6,shells:[2,4]},
+      7:{name:'Nitrogen',sym:'N',z:7,shells:[2,5]},
+      8:{name:'Oksigen',sym:'O',z:8,shells:[2,6]},
+      11:{name:'Natrium',sym:'Na',z:11,shells:[2,8,1]},
+      17:{name:'Klorin',sym:'Cl',z:17,shells:[2,8,7]},
+      19:{name:'Kalium',sym:'K',z:19,shells:[2,8,8,1]}
+    };
+    var picks=document.getElementById('atom-picks'), view=document.getElementById('atom-orbit-view');
+    if(!picks||!view)return;
+    function render(z){
+      var a=data[z]; if(!a)return;
+      picks.querySelectorAll('.pick').forEach(function(b){b.classList.toggle('on',Number(b.dataset.z)===a.z);});
+      var cx=180,cy=150, svg='<svg viewBox="0 0 360 300" role="img" aria-label="Model atom '+a.sym+' dengan '+a.z+' elektron yang bergerak pada kulit atom">';
+      svg+='<circle cx="'+cx+'" cy="'+cy+'" r="25" fill="#2457b5"/><text x="'+cx+'" y="'+(cy+7)+'" text-anchor="middle" font-size="21" font-weight="700" fill="#fff">'+a.sym+'</text>';
+      var names=['K','L','M','N'];
+      a.shells.forEach(function(count,i){
+        var r=48+i*29, color=i===a.shells.length-1?'#d6a52c':'#dbeafe';
+        svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#8aa0c5" stroke-dasharray="4 5" stroke-width="1.5"/>';
+        svg+='<text x="'+(cx+r+5)+'" y="'+(cy-5)+'" font-size="12" font-weight="700" fill="#fff">'+names[i]+'</text>';
+        svg+='<g class="electron-ring">';
+        for(var j=0;j<count;j++){
+          var ang=(Math.PI*2*j/count)-Math.PI/2, x=cx+r*Math.cos(ang), y=cy+r*Math.sin(ang);
+          svg+='<circle cx="'+x.toFixed(2)+'" cy="'+y.toFixed(2)+'" r="5.5" fill="'+color+'" stroke="#07133a" stroke-width="1"/>';
+        }
+        svg+='<animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 '+cx+' '+cy+'" to="360 '+cx+' '+cy+'" dur="'+(5+i*1.4)+'s" repeatCount="indefinite"/>';
+        svg+='</g>'; 
+      });
+      svg+='</svg>'; view.innerHTML=svg;
+      document.getElementById('atom-name').textContent=a.name+' ('+a.sym+')';
+      document.getElementById('atom-z').textContent='Nomor atom Z = '+a.z+' • Jumlah elektron = '+a.z;
+      document.getElementById('atom-config').textContent='Konfigurasi: '+a.shells.join(' ');
+      var rows='<table><thead><tr><th>Kulit</th><th>Jumlah elektron</th></tr></thead><tbody>';
+      a.shells.forEach(function(n,i){rows+='<tr><td>'+names[i]+'</td><td>'+n+'</td></tr>';});
+      rows+='</tbody></table>'; document.getElementById('atom-shell-table').innerHTML=rows;
+      document.getElementById('atom-valence').textContent='Elektron valensi '+a.sym+' = '+a.shells[a.shells.length-1]+' (kulit '+names[a.shells.length-1]+')';
+    }
+    picks.addEventListener('click',function(e){var b=e.target.closest('.pick');if(b)render(Number(b.dataset.z));});
+    render(1);
+  })();
+
+  /* =====================================================
+     MULAI
+     ===================================================== */
+  done[1]=true;
+  updateIdHint();
+  flushOutbox();
+  goTo(1);
+})();
+
+</script>
+</body>
+</html>
